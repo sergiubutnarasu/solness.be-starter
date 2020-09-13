@@ -1,6 +1,9 @@
+import { UseGuards } from '@nestjs/common';
 import { Resolver } from '@nestjs/graphql';
+import { Roles } from '~/modules/auth/decorators';
+import { GraphQlAuthGuard, GraphQlRolesGuard } from '~/modules/auth/guards';
 import { createBaseResolver } from '~/modules/core';
-import { User, UserInput } from '../objects';
+import { Role, User, UserInput } from '../objects';
 import { UserService } from '../services';
 
 const UserBaseResolver = createBaseResolver<User, UserInput, UserService>(
@@ -9,8 +12,8 @@ const UserBaseResolver = createBaseResolver<User, UserInput, UserService>(
   UserInput,
 );
 
-// @UseGuards(GraphQlAuthGuard, GraphQlRolesGuard)
-// @Roles(Role.Admin)
+@UseGuards(GraphQlAuthGuard, GraphQlRolesGuard)
+@Roles(Role.Admin)
 @Resolver(() => User)
 export class UserResolver extends UserBaseResolver {
   constructor(service: UserService) {
