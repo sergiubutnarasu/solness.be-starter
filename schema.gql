@@ -1,0 +1,42 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: Int
+  enabled: Boolean!
+  email: String!
+  firstName: String!
+  lastName: String!
+  role: Int!
+}
+
+type PaginatedUserResponse {
+  data: [User!]!
+  total: Int!
+}
+
+type Query {
+  allUser: [User!]
+  findUser(request: PageListInput!): PaginatedUserResponse
+  getUser(id: Float!): User
+}
+
+input PageListInput {
+  page: Float = 1
+  pageSize: Float = 10
+}
+
+type Mutation {
+  deleteUser(id: Float!): User!
+  saveUser(model: UserInput!): User!
+}
+
+input UserInput {
+  id: Int
+  enabled: Boolean!
+  email: String!
+  firstName: String!
+  lastName: String!
+  role: Int!
+}
