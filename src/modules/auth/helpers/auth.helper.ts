@@ -22,10 +22,10 @@ class AuthHelperClass {
 
   private getDefaultLinkDomain() {
     const domain = AppHelper.getConfig(AppConfigKey.DefaultLink).match(
-      '.*([^.]+|)(com|net|org|info|coop|int|co.uk|org.uk|ac.uk|uk|__and so on__)$|localhost',
+      '.*([^.]+|)(com|net|org|info|coop|int|co.uk|org.uk|ac.uk|uk|ro)$|localhost',
     );
 
-    return domain[0];
+    return domain?.[0];
   }
 
   public getCookieByName(request: any, cookieName: string): string {
@@ -38,7 +38,7 @@ class AuthHelperClass {
     }
   }
 
-  public securizateJwtToken(req: Request, token: any) {
+  public secureJwtToken(req: Request, token: any) {
     const jwtToken = token;
     req.res.cookie('signature', token.signature, {
       expires: DateHelper.addDays(100),

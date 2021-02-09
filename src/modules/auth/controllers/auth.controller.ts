@@ -21,7 +21,7 @@ export class AuthController {
   async login(@Request() req: any) {
     const token = await this.authService.generateToken(req.user.id);
 
-    return AuthHelper.securizateJwtToken(req, token);
+    return AuthHelper.secureJwtToken(req, token);
   }
 
   @Post('reset-password')
@@ -70,7 +70,7 @@ export class AuthController {
       throw new UnauthorizedException();
     }
 
-    return AuthHelper.securizateJwtToken(req, token);
+    return AuthHelper.secureJwtToken(req, token);
   }
 
   @Post('logout')
