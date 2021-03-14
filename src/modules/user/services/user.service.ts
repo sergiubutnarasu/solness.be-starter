@@ -74,7 +74,7 @@ export class UserService extends BaseService<User> {
     return {
       email: data.email,
       id: data.id,
-      role: parseInt(data.role),
+      role: data.role,
       data: {
         firstName: data.firstName,
         lastName: data.lastName,

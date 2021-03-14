@@ -26,7 +26,7 @@ export class User extends BaseEntity {
   @Column({ length: 250, select: false })
   password: string;
 
-  @Field(() => Int)
+  @Field()
   @Column({ type: 'enum', enum: Role, default: Role.User })
   role: Role;
 }

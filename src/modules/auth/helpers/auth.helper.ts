@@ -74,6 +74,10 @@ class AuthHelperClass {
 
     return token;
   }
+
+  public clearSignature(req: Request) {
+    req.res.clearCookie('signature');
+  }
 }
 
 const AuthHelper = AuthHelperClass.getInstance();

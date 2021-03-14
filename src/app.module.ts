@@ -36,6 +36,10 @@ const appModules = [modules.AuthModule, modules.UserModule];
       playground: AppHelper.checkEnvironment(Environment.Development),
       autoSchemaFile: 'schema.gql',
       context: ({ req }) => ({ req }),
+      cors: {
+        origin: AppHelper.getConfig(AppConfigKey.DefaultLink),
+        credentials: true,
+      },
     }),
     ...appModules,
   ],
