@@ -56,6 +56,10 @@ export function createBaseResolver<
       @CurrentUser() user: UserContext,
       @Args('id') id: number,
     ): Promise<TEntity> {
+      if (id === user.id) {
+        throw new BadRequestException();
+      }
+
       if (!!options && options.overrideDelete) {
         throw new BadRequestException();
       }
