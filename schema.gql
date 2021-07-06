@@ -12,14 +12,22 @@ type User {
 }
 
 type PaginatedUserResponse {
-  data: [User!]!
+  data: [User!]
   total: Int!
+  success: Boolean!
+  message: String
+}
+
+type UserResponse {
+  data: User
+  success: Boolean!
+  message: String
 }
 
 type Query {
-  allUser: [User!]
+  allUser: PaginatedUserResponse
   findUser(request: PageListInput!): PaginatedUserResponse
-  getUser(id: Float!): User
+  getUser(id: Float!): UserResponse
 }
 
 input PageListInput {
@@ -28,8 +36,8 @@ input PageListInput {
 }
 
 type Mutation {
-  deleteUser(id: Float!): User!
-  saveUser(model: UserInput!): User!
+  saveUser(model: UserInput!): UserResponse!
+  deleteUser(id: Float!): UserResponse!
 }
 
 input UserInput {

@@ -14,7 +14,7 @@ export class EmailService {
     await sendgrid.send(mail);
   }
 
-  public sendResetPasswordEmail(email: string, token: string) {
+  public async sendResetPasswordEmail(email: string, token: string) {
     const mail: MailDataRequired = {
       subject: 'Reset Password',
       to: email,
@@ -22,7 +22,7 @@ export class EmailService {
       text: `${AppHelper.getConfig(AppConfigKey.DefaultLink)}/${token}`,
     };
 
-    this.sendEmail(mail);
+    await this.sendEmail(mail);
   }
 
   private prepareEmail(mail: MailDataRequired) {

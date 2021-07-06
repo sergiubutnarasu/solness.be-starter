@@ -3,15 +3,16 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import * as modules from './modules';
+import { AuthModule } from './modules/auth';
 import {
   AppConfigKey,
   AppHelper,
   CommonSubscriber,
   Environment,
 } from './modules/core';
+import { UserModule } from './modules/user';
 
-const appModules = [modules.AuthModule, modules.UserModule];
+const appModules = [AuthModule, UserModule];
 
 @Module({
   imports: [

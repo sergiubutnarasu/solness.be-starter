@@ -2,6 +2,7 @@ export { CurrentUser } from './decorators';
 export { GraphQLFilter } from './filters';
 export {
   AppHelper,
+  composeResult,
   CryptoHelper,
   DateHelper,
   PaginationHelper,
@@ -12,6 +13,8 @@ export {
   BaseEntity,
   BasePageListInput,
   Environment,
+  GenericResponse,
+  GraphQLGenericResponse,
   IBaseResolverOptions,
   IPageList,
   KeyValue,

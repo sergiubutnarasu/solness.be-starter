@@ -1,9 +1,13 @@
 import { BadRequestException, NotFoundException, Type } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from '../decorators';
+import { composeResult } from '../helpers';
 import {
   BaseEntity,
+  GenericResponse,
+  GraphQLGenericResponse,
   IBaseResolverOptions,
+  PageList,
   PageListInput,
   PaginatedResponse,
   UserContext,
@@ -21,7 +25,7 @@ export function createBaseResolver<
   options: IBaseResolverOptions = null,
 ): any {
   const PaginatedBaseResponse = PaginatedResponse(TEntityClass);
-  type PaginatedBaseResponse = InstanceType<typeof PaginatedBaseResponse>;
+  const GraphQLGenericBaseResponse = GraphQLGenericResponse(TEntityClass);
 
   const findSuffix =
     !!options && options.overrideFind ? `Override${suffix}` : suffix;
@@ -39,32 +43,23 @@ export function createBaseResolver<
   abstract class BaseResolver {
     constructor(private readonly baseService: TService) {}
 
-    @Query(() => [TEntityClass], {
+    @Query(() => PaginatedBaseResponse, {
       name: `all${findSuffix}`,
       nullable: true,
     })
-    public async all(@CurrentUser() user: UserContext): Promise<TEntity[]> {
+    public async all(
+      @CurrentUser() user: UserContext,
+    ): Promise<PageList<TEntity>> {
       if (!!options && options.overrideFind) {
         throw new BadRequestException();
       }
 
-      return await this.baseService.all(user);
-    }
+      const result = await this.baseService.all(user);
 
-    @Mutation(() => TEntityClass, { name: `delete${deleteSuffix}` })
-    public async delete(
-      @CurrentUser() user: UserContext,
-      @Args('id') id: number,
-    ): Promise<TEntity> {
-      if (id === user.id) {
-        throw new BadRequestException();
-      }
-
-      if (!!options && options.overrideDelete) {
-        throw new BadRequestException();
-      }
-
-      return await this.baseService.delete(id, user);
+      return (composeResult({
+        data: result,
+        success: true,
+      }) as unknown) as PageList<TEntity>;
     }
 
     @Query(() => PaginatedBaseResponse, {
@@ -74,19 +69,24 @@ export function createBaseResolver<
     public async find(
       @CurrentUser() user: UserContext,
       @Args('request') request: PageListInput,
-    ): Promise<PaginatedBaseResponse> {
+    ): Promise<PageList<TEntity>> {
       if (!!options && options.overrideFind) {
         throw new BadRequestException();
       }
 
-      return await this.baseService.findAndCount(user, request);
+      const result = await this.baseService.findAndCount(user, request);
+
+      return (composeResult({ ...result }) as unknown) as PageList<TEntity>;
     }
 
-    @Query(() => TEntityClass, { name: `get${getSuffix}`, nullable: true })
+    @Query(() => GraphQLGenericBaseResponse, {
+      name: `get${getSuffix}`,
+      nullable: true,
+    })
     public async get(
       @CurrentUser() user: UserContext,
       @Args('id') id: number,
-    ): Promise<TEntity> {
+    ): Promise<GenericResponse<TEntity>> {
       if (!!options && options.overrideGet) {
         throw new BadRequestException();
       }
@@ -95,20 +95,45 @@ export function createBaseResolver<
       if (!model) {
         throw new NotFoundException(id);
       }
-      return model;
+
+      return composeResult({ data: model });
     }
 
-    @Mutation(() => TEntityClass, { name: `save${saveSuffix}` })
+    @Mutation(() => GraphQLGenericBaseResponse, { name: `save${saveSuffix}` })
     public async save(
       @CurrentUser() user: UserContext,
       @Args({ name: 'model', type: () => TInputEntityClass })
       model: TEntity,
-    ): Promise<TEntity> {
+    ): Promise<GenericResponse<TEntity>> {
       if (!!options && options.overrideSave) {
         throw new BadRequestException();
       }
 
-      return await this.baseService.save(user, model);
+      const result = await this.baseService.save(user, model);
+
+      return composeResult({ data: result });
+    }
+
+    @Mutation(() => GraphQLGenericBaseResponse, {
+      name: `delete${deleteSuffix}`,
+    })
+    public async delete(
+      @CurrentUser() user: UserContext,
+      @Args('id') id: number,
+    ): Promise<GenericResponse<TEntity>> {
+      if (id === user.id) {
+        return composeResult({
+          success: false,
+          message: 'Cannot delete the current user',
+        });
+      }
+
+      if (!!options && options.overrideDelete) {
+        throw new BadRequestException();
+      }
+
+      const result = await this.baseService.delete(id, user);
+      return composeResult({ data: result });
     }
   }
 

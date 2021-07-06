@@ -1,7 +1,6 @@
-import AppHelper from './app.helper';
-import CryptoHelper from './crypto.helper';
-import DateHelper from './date.helper';
-import PaginationHelper from './pagination.helper';
-import StringHelper from './string.helper';
-
-export { AppHelper, CryptoHelper, DateHelper, PaginationHelper, StringHelper };
+export { default as AppHelper } from './app.helper';
+export { default as composeResult } from './compose-result.helper';
+export { default as CryptoHelper } from './crypto.helper';
+export { default as DateHelper } from './date.helper';
+export { default as PaginationHelper } from './pagination.helper';
+export { default as StringHelper } from './string.helper';

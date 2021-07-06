@@ -1,3 +1,3 @@
 export enum AuthKeys {
-  AuthSecret = 'CORE_AUTH_SECRET',
+  AuthSecret = 'SOLNESS_AUTH_SECRET',
 }

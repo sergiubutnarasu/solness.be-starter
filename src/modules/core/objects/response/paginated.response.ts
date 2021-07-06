@@ -9,10 +9,17 @@ export function PaginatedResponse<TItem>(
 
   @ObjectType(`Paginated${className}Response`)
   class PaginatedResponseClass {
-    @Field(() => [TItemClass])
-    public data: TItem[];
+    @Field(() => [TItemClass], { nullable: true })
+    public data?: TItem[];
+
     @Field(() => Int)
     public total: number;
+
+    @Field()
+    public success: boolean;
+
+    @Field({ nullable: true })
+    public message?: string;
   }
   return PaginatedResponseClass;
 }
