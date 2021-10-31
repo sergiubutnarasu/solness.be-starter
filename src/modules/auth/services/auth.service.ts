@@ -93,6 +93,7 @@ export class AuthService {
         !!accessTokenData &&
         accessTokenData.sub === oldRefreshToken.userId
       ) {
+        this.deleteRefreshToken(refreshToken);
         return await this.generateToken(oldRefreshToken.userId);
       }
     } catch {
@@ -100,8 +101,23 @@ export class AuthService {
     }
   }
 
-  public async logout(token: string) {
-    await this.refreshTokenRepository.delete({ token });
+  public async logout(refreshToken: string) {
+    await this.deleteRefreshToken(refreshToken);
+  }
+
+  async verifyAndChangePassword(token: string, newPassword: string) {
+    try {
+      const tokenDetails: { userId: number } = await this.jwtService.verify(
+        token,
+      );
+
+      return (
+        tokenDetails.userId != null &&
+        this.userService.changePassword(tokenDetails.userId, newPassword)
+      );
+    } catch {
+      return false;
+    }
   }
 
   private async createRefreshToken(userId: any) {
@@ -121,18 +137,7 @@ export class AuthService {
     return token;
   }
 
-  async verifyAndChangePassword(token: string, newPassword: string) {
-    try {
-      const tokenDetails: { userId: number } = await this.jwtService.verify(
-        token,
-      );
-
-      return (
-        tokenDetails.userId != null &&
-        this.userService.changePassword(tokenDetails.userId, newPassword)
-      );
-    } catch {
-      return false;
-    }
+  private async deleteRefreshToken(refreshToken: string) {
+    await this.refreshTokenRepository.delete({ token: refreshToken });
   }
 }
