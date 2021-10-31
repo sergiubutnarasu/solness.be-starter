@@ -1,15 +1,11 @@
 export { BaseEntity } from './entities';
 export { AppConfigKey, Environment } from './enums';
 export { BasePageListInput, PageListInput } from './inputs';
-export { PageList, RelationModel } from './model';
+export { RelationModel } from './model';
 export {
   GenericResponse,
   GraphQLGenericResponse,
+  GraphQLPaginatedResponse,
   PaginatedResponse,
 } from './response';
-export {
-  IBaseResolverOptions,
-  IPageList,
-  KeyValue,
-  UserContext,
-} from './types';
+export { KeyValue, UserContext } from './types';

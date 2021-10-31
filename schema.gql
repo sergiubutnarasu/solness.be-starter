@@ -11,23 +11,22 @@ type User {
   role: String!
 }
 
-type PaginatedUserResponse {
-  data: [User!]
-  total: Int!
-  success: Boolean!
-  message: String
-}
-
 type UserResponse {
   data: User
   success: Boolean!
   message: String
 }
 
+type PaginatedUserResponse {
+  success: Boolean!
+  message: String
+  data: [User!]
+  total: Int!
+}
+
 type Query {
-  allUser: PaginatedUserResponse
-  findUser(request: PageListInput!): PaginatedUserResponse
-  getUser(id: Float!): UserResponse
+  users(request: PageListInput): PaginatedUserResponse!
+  user(id: Float!): UserResponse!
 }
 
 input PageListInput {

@@ -1,25 +1,8 @@
-import { Type } from '@nestjs/common';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { GenericResponse } from './generic.response';
+import { BaseEntity } from '../entities';
 
-export function PaginatedResponse<TItem>(
-  TItemClass: Type<TItem>,
-  name: string = null,
-): any {
-  const className = name ?? TItemClass.name;
-
-  @ObjectType(`Paginated${className}Response`)
-  class PaginatedResponseClass {
-    @Field(() => [TItemClass], { nullable: true })
-    public data?: TItem[];
-
-    @Field(() => Int)
-    public total: number;
-
-    @Field()
-    public success: boolean;
-
-    @Field({ nullable: true })
-    public message?: string;
-  }
-  return PaginatedResponseClass;
+export class PaginatedResponse<
+  TItem extends BaseEntity
+> extends GenericResponse<TItem[]> {
+  public total: number;
 }

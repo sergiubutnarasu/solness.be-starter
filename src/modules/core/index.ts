@@ -15,17 +15,14 @@ export {
   Environment,
   GenericResponse,
   GraphQLGenericResponse,
-  IBaseResolverOptions,
-  IPageList,
+  GraphQLPaginatedResponse,
   KeyValue,
-  PageList,
   PageListInput,
   PaginatedResponse,
   RelationModel,
   UserContext,
 } from './objects';
 export { BaseRepository } from './repositories';
-export { createBaseResolver } from './resolvers';
 export { BaseCrudService, BaseService } from './services';
 export { CommonSubscriber } from './subscribers';
 export { EncryptTransform } from './transformers';

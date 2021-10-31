@@ -1,8 +1,8 @@
 import { SelectQueryBuilder } from 'typeorm';
+import { PaginatedResponse } from '..';
 import { PaginationHelper } from '../helpers';
 import { BaseEntity } from '../objects/entities';
 import { PageListInput } from '../objects/inputs';
-import { PageList } from '../objects/model';
 import { UserContext } from '../objects/types';
 import { BaseCrudService } from './base-crud.service';
 
@@ -34,7 +34,7 @@ export abstract class BaseService<
   public async findAndCount<TRequest extends PageListInput>(
     user: UserContext,
     request: TRequest,
-  ): Promise<PageList<TEntity>> {
+  ): Promise<PaginatedResponse<TEntity>> {
     const skip = PaginationHelper.calculateOffset(
       request.page,
       request.pageSize,
