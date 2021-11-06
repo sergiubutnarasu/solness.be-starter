@@ -24,9 +24,32 @@ type PaginatedUserResponse {
   total: Int!
 }
 
+type Company {
+  id: Int
+  enabled: Boolean!
+  name: String!
+  email: String!
+  phone: String!
+}
+
+type CompanyResponse {
+  data: Company
+  success: Boolean!
+  message: String
+}
+
+type PaginatedCompanyResponse {
+  success: Boolean!
+  message: String
+  data: [Company!]
+  total: Int!
+}
+
 type Query {
   users(request: PageListInput): PaginatedUserResponse!
   user(id: Float!): UserResponse!
+  companies(request: PageListInput): PaginatedCompanyResponse!
+  company(id: Float!): CompanyResponse!
 }
 
 input PageListInput {
@@ -37,6 +60,8 @@ input PageListInput {
 type Mutation {
   saveUser(model: UserInput!): UserResponse!
   deleteUser(id: Float!): UserResponse!
+  saveCompany(model: CompanyInput!): CompanyResponse!
+  deleteCompany(id: Float!): CompanyResponse!
 }
 
 input UserInput {
@@ -45,4 +70,12 @@ input UserInput {
   email: String!
   firstName: String!
   lastName: String!
+}
+
+input CompanyInput {
+  id: Int
+  enabled: Boolean!
+  name: String!
+  email: String!
+  phone: String!
 }

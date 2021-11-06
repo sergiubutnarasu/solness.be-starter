@@ -1,7 +1,6 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
-import { BaseEntity } from '~/modules/core';
-import { User } from '~/modules/user';
+import { Column, Entity } from 'typeorm';
+import { BaseEntity, EncryptTransform } from '~/modules/core';
 
 @Entity()
 @ObjectType()
@@ -11,7 +10,18 @@ export class Company extends BaseEntity {
   @Column()
   name: string;
 
-  @ManyToMany(() => User)
-  @JoinTable({ name: 'companyUsers' })
-  users: User[];
+  @Field()
+  @Column({
+    length: 150,
+    unique: true,
+    transformer: EncryptTransform,
+  })
+  email: string;
+
+  @Field()
+  @Column({
+    unique: true,
+    transformer: EncryptTransform,
+  })
+  phone: string;
 }

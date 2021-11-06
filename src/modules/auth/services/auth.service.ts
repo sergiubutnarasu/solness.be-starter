@@ -93,7 +93,6 @@ export class AuthService {
         !!accessTokenData &&
         accessTokenData.sub === oldRefreshToken.userId
       ) {
-        this.deleteRefreshToken(refreshToken);
         return await this.generateToken(oldRefreshToken.userId);
       }
     } catch {

@@ -13,7 +13,6 @@ import { UserRepository } from '../repositories';
 @Injectable()
 export class UserService extends BaseService<User> {
   protected addAccessCondition(
-    _user: UserContext,
     query: SelectQueryBuilder<User>,
   ): SelectQueryBuilder<User> {
     return query;
@@ -26,10 +25,10 @@ export class UserService extends BaseService<User> {
     super(repo);
   }
 
-  public async create(user: UserContext, model: User): Promise<User> {
+  public async create(model: User, user: UserContext): Promise<User> {
     const password = StringHelper.generateString(6, 12);
     model.password = CryptoHelper.hash(password);
-    const result = await super.create(user, model);
+    const result = await super.create(model, user);
 
     await this.sendPasswordEmail(model, password);
     return result;

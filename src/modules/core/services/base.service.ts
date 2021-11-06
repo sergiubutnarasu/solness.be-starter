@@ -10,18 +10,18 @@ export abstract class BaseService<
   TEntity extends BaseEntity
 > extends BaseCrudService<TEntity> {
   protected abstract addAccessCondition(
-    user: UserContext,
     query: SelectQueryBuilder<TEntity>,
+    user: UserContext,
   ): SelectQueryBuilder<TEntity>;
 
-  public async create(user: UserContext, model: TEntity): Promise<TEntity> {
+  public async create(model: TEntity, user: UserContext): Promise<TEntity> {
     model.enabled = true;
     return await this.saveEntity(model, user.id);
   }
 
   public async all(user: UserContext): Promise<TEntity[]> {
     const query = this.repo.createQueryBuilder('GENERIC');
-    const conditionQuery = this.addAccessCondition(user, query);
+    const conditionQuery = this.addAccessCondition(query, user);
 
     return await conditionQuery.getMany();
   }
@@ -32,8 +32,8 @@ export abstract class BaseService<
   }
 
   public async findAndCount<TRequest extends PageListInput>(
-    user: UserContext,
     request: TRequest,
+    user: UserContext,
   ): Promise<PaginatedResponse<TEntity>> {
     const skip = PaginationHelper.calculateOffset(
       request.page,
@@ -46,7 +46,7 @@ export abstract class BaseService<
       .take(request.pageSize)
       .where('GENERIC.enabled = 1');
 
-    const conditionQuery = this.addAccessCondition(user, query);
+    const conditionQuery = this.addAccessCondition(query, user);
     const [results, count] = await conditionQuery.getManyAndCount();
 
     return { data: results, total: count, success: true };
@@ -57,22 +57,22 @@ export abstract class BaseService<
       .createQueryBuilder('GENERIC')
       .where('GENERIC.id = :id', { id });
 
-    const conditionQuery = this.addAccessCondition(user, query);
+    const conditionQuery = this.addAccessCondition(query, user);
 
     return await conditionQuery.getOne();
   }
 
-  public async save(user: UserContext, model: TEntity): Promise<TEntity> {
+  public async save(model: TEntity, user: UserContext): Promise<TEntity> {
     const result = !!model.id
-      ? await this.update(user, model.id, model)
-      : await this.create(user, model);
+      ? await this.update(model.id, model, user)
+      : await this.create(model, user);
     return result;
   }
 
   public async update(
-    user: UserContext,
     id: number,
     model: TEntity,
+    user: UserContext,
   ): Promise<TEntity> {
     const existsModel = await this.get(id, user);
     if (!!existsModel) {

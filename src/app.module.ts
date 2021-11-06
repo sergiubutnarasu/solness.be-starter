@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './modules/auth';
+import { CompanyModule } from './modules/company';
 import {
   AppConfigKey,
   AppHelper,
@@ -12,7 +13,7 @@ import {
 } from './modules/core';
 import { UserModule } from './modules/user';
 
-const appModules = [AuthModule, UserModule];
+const appModules = [AuthModule, UserModule, CompanyModule];
 
 @Module({
   imports: [

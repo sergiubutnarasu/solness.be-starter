@@ -24,18 +24,18 @@ export class UserResolver {
   constructor(private readonly service: UserService) {}
 
   /**
-   *
-   * @param user Current logged user
+   * Get the list of users
    * @param request Page and page size
+   * @param user Current logged user
    * @returns Returns user response that contains a list of users
    */
   @Query(() => PaginatedUserResponse, { name: 'users' })
   public async find(
-    @CurrentUser() user: UserContext,
     @Args('request', { nullable: true })
     request: PageListInput = { page: 0, pageSize: 10 },
+    @CurrentUser() user: UserContext,
   ) {
-    const result = await this.service.findAndCount(user, request);
+    const result = await this.service.findAndCount(request, user);
 
     return composeResult({ ...result });
   }
@@ -48,8 +48,8 @@ export class UserResolver {
    */
   @Query(() => UserResponse, { name: 'user' })
   public async get(
-    @CurrentUser() user: UserContext,
     @Args('id') id: number,
+    @CurrentUser() user: UserContext,
   ): Promise<UserResponse> {
     const model = await this.service.get(id, user);
 
@@ -71,25 +71,25 @@ export class UserResolver {
    */
   @Mutation(() => UserResponse, { name: 'saveUser' })
   public async save(
-    @CurrentUser() user: UserContext,
     @Args({ name: 'model', type: () => UserInput })
     model: User,
+    @CurrentUser() user: UserContext,
   ): Promise<UserResponse> {
-    const result = await this.service.save(user, model);
+    const result = await this.service.save(model, user);
 
     return composeResult({ data: result });
   }
 
   /**
-   * User this function if you want to delete an user
+   * Use this function if you want to delete an user
    * @param user Current logged user
    * @param id The user ID that will be deleted
    * @returns User response
    */
   @Mutation(() => UserResponse, { name: 'deleteUser' })
   public async delete(
-    @CurrentUser() user: UserContext,
     @Args('id') id: number,
+    @CurrentUser() user: UserContext,
   ): Promise<UserResponse> {
     if (id === user.id) {
       return composeResult({
