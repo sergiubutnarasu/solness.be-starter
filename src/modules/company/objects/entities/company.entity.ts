@@ -1,6 +1,7 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { BaseEntity, EncryptTransform } from '~/modules/core';
+import { CompanyUser } from './company-user.entity';
 
 @Entity()
 @ObjectType()
@@ -24,4 +25,8 @@ export class Company extends BaseEntity {
     transformer: EncryptTransform,
   })
   phone: string;
+
+  @Field(() => [CompanyUser], { nullable: true })
+  @OneToMany(() => CompanyUser, (companyUser) => companyUser.company)
+  users?: CompanyUser[];
 }

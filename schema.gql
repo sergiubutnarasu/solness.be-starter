@@ -30,6 +30,15 @@ type Company {
   name: String!
   email: String!
   phone: String!
+  users: [CompanyUser!]
+}
+
+type CompanyUser {
+  id: Int
+  enabled: Boolean!
+  userId: Float!
+  companyId: Float!
+  role: String!
 }
 
 type CompanyResponse {
@@ -78,4 +87,13 @@ input CompanyInput {
   name: String!
   email: String!
   phone: String!
+  users: [CompanyUserInput!]
+}
+
+input CompanyUserInput {
+  id: Int
+  enabled: Boolean!
+  userId: Float!
+  companyId: Float!
+  role: String!
 }

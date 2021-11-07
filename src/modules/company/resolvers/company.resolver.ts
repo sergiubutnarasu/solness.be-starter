@@ -10,13 +10,16 @@ import {
   CompanyResponse,
   PaginatedCompanyResponse,
 } from '../objects';
-import { CompanyService } from '../services';
+import { CompanyService, CompanyUserService } from '../services';
 
 @UseGuards(GraphQlAuthGuard, GraphQlRolesGuard)
 @Roles(Role.Admin)
 @Resolver(() => Company)
 export class CompanyResolver {
-  constructor(private readonly service: CompanyService) {}
+  constructor(
+    private readonly service: CompanyService,
+    private readonly companyUserService: CompanyUserService,
+  ) {}
 
   /**
    * Get the list of companies
