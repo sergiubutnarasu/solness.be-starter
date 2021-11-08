@@ -8,6 +8,7 @@ import { UserModule } from '../user';
 import { AuthController } from './controllers';
 import { AuthKeys } from './objects';
 import { AuthRepository } from './repositories';
+import { AuthResolver } from './resolvers';
 import { AuthService } from './services';
 import { JwtStrategy, LocalStrategy } from './strategies';
 
@@ -23,6 +24,6 @@ import { JwtStrategy, LocalStrategy } from './strategies';
     EmailModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthResolver, AuthService, LocalStrategy, JwtStrategy],
 })
 export class AuthModule {}

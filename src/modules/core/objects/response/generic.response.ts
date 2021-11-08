@@ -1,6 +1,11 @@
-export class GenericResponse<TItem> {
-  public data?: TItem;
+export interface BaseResponse {
+  success: boolean;
+  messages?: string[];
+}
+
+export class GenericResponse<TItem> implements BaseResponse {
   public success: boolean;
-  public message?: string;
+  public messages?: string[];
+  public data?: TItem;
   [key: string]: unknown;
 }

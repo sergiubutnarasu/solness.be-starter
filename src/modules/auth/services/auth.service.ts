@@ -4,7 +4,7 @@ import { MoreThanOrEqual } from 'typeorm';
 import { CryptoHelper, DateHelper, StringHelper } from '~/modules/core';
 import { EmailService } from '~/modules/email';
 import { UserService } from '~/modules/user';
-import { RefreshToken } from '../objects';
+import { TokenPayload, RefreshToken } from '../objects';
 import { AuthRepository } from '../repositories';
 
 @Injectable()
@@ -38,7 +38,7 @@ export class AuthService {
     return null;
   }
 
-  public async generateToken(userId: number) {
+  public async generateToken(userId: number): Promise<TokenPayload> {
     const userPayload = await this.userService.getUserAuthPayload(userId);
 
     const payload = {

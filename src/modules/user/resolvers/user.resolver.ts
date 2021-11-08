@@ -56,7 +56,7 @@ export class UserResolver {
     if (!model) {
       return composeResult({
         success: false,
-        message: 'User not found.',
+        messages: ['User not found.'],
       });
     }
 
@@ -94,7 +94,7 @@ export class UserResolver {
     if (id === user.id) {
       return composeResult({
         success: false,
-        message: 'Cannot delete the current user.',
+        messages: ['Cannot delete the current user.'],
       });
     }
 

@@ -20,6 +20,7 @@ export {
   PageListInput,
   PaginatedResponse,
   RelationModel,
+  SimpleResponse,
   UserContext,
 } from './objects';
 export { BaseRepository } from './repositories';

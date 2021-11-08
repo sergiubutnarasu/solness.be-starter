@@ -7,7 +7,7 @@ export class RefreshToken extends BaseEntity {
   userId: number;
 
   @ManyToOne('User', { nullable: false })
-  user?: any;
+  user?: unknown;
 
   @Column({ length: 250 })
   token: string;

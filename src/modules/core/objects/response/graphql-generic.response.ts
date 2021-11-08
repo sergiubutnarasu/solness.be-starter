@@ -1,9 +1,8 @@
 import { Type } from '@nestjs/common';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { BaseEntity } from '../entities';
 import { GenericResponse } from './generic.response';
 
-export const GraphQLGenericResponse = <TItem extends BaseEntity>(
+export const GraphQLGenericResponse = <TItem>(
   classRef: Type<TItem>,
 ): Type<GenericResponse<TItem>> => {
   @ObjectType({ isAbstract: true })
@@ -14,8 +13,8 @@ export const GraphQLGenericResponse = <TItem extends BaseEntity>(
     @Field()
     public success: boolean;
 
-    @Field({ nullable: true })
-    public message?: string;
+    @Field(() => [String], { nullable: true })
+    public messages?: string[];
   }
 
   return GraphQLGenericResponseClass as Type<GenericResponse<TItem>>;

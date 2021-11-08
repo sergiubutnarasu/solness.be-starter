@@ -7,11 +7,11 @@ type ComposeResult<T> = Partial<GenericResponse<T>> & {
 const composeResult = <T>({
   data,
   success = true,
-  message,
+  messages,
   ...restOptions
 }: ComposeResult<T> = {}): GenericResponse<T> => ({
   success,
-  message,
+  messages,
   data,
   ...restOptions,
 });

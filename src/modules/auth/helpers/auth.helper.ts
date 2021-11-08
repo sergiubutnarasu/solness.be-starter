@@ -5,6 +5,7 @@ import {
   DateHelper,
   Environment,
 } from '~/modules/core';
+import { TokenPayload } from '../objects';
 
 class AuthHelperClass {
   private static instance: AuthHelperClass;
@@ -38,7 +39,7 @@ class AuthHelperClass {
     }
   }
 
-  public secureJwtToken(req: Request, token: any) {
+  public secureJwtToken(req: Request, token: any): Promise<TokenPayload> {
     const jwtToken = token;
     req.res.cookie('signature', token.signature, {
       expires: DateHelper.addDays(100),

@@ -7,5 +7,6 @@ export {
   GraphQLGenericResponse,
   GraphQLPaginatedResponse,
   PaginatedResponse,
+  SimpleResponse,
 } from './response';
 export { KeyValue, UserContext } from './types';

@@ -2,6 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type SimpleResponse {
+  success: Boolean!
+  messages: [String!]
+}
+
 type User {
   id: Int
   enabled: Boolean!
@@ -14,14 +19,26 @@ type User {
 type UserResponse {
   data: User
   success: Boolean!
-  message: String
+  messages: [String!]
 }
 
 type PaginatedUserResponse {
   success: Boolean!
-  message: String
+  messages: [String!]
   data: [User!]
   total: Int!
+}
+
+type TokenPayload {
+  accessToken: String!
+  refreshToken: String!
+  expiresIn: Float!
+}
+
+type TokenResponse {
+  data: TokenPayload
+  success: Boolean!
+  messages: [String!]
 }
 
 type Company {
@@ -44,12 +61,12 @@ type CompanyUser {
 type CompanyResponse {
   data: Company
   success: Boolean!
-  message: String
+  messages: [String!]
 }
 
 type PaginatedCompanyResponse {
   success: Boolean!
-  message: String
+  messages: [String!]
   data: [Company!]
   total: Int!
 }
@@ -67,6 +84,9 @@ input PageListInput {
 }
 
 type Mutation {
+  login(password: String!, username: String!): TokenResponse!
+  logout(refreshToken: String!): SimpleResponse!
+  refresh(accessToken: String!, refreshToken: String!): TokenResponse!
   saveUser(model: UserInput!): UserResponse!
   deleteUser(id: Float!): UserResponse!
   saveCompany(model: CompanyInput!): CompanyResponse!

@@ -9,6 +9,5 @@ import { CompanyService, CompanyUserService } from './services';
     TypeOrmModule.forFeature([CompanyRepository, CompanyUserRepository]),
   ],
   providers: [CompanyService, CompanyUserService, CompanyResolver],
-  exports: [CompanyService],
 })
 export class CompanyModule {}

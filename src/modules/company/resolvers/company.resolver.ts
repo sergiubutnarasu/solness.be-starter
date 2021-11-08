@@ -54,7 +54,7 @@ export class CompanyResolver {
     if (!model) {
       return composeResult({
         success: false,
-        message: 'Company not found.',
+        messages: ['Company not found.'],
       });
     }
 
