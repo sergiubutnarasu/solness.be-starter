@@ -1,5 +1,5 @@
 import { Request } from '@nestjs/common';
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Resolver, Context } from '@nestjs/graphql';
 import { composeResult, SimpleResponse } from '~/modules/core';
 import { AuthHelper } from '../helpers';
 import { TokenResponse } from '../objects';
@@ -11,7 +11,7 @@ export class AuthResolver {
 
   @Mutation(() => TokenResponse, { name: 'login' })
   public async login(
-    @Request() req: any,
+    @Context() ctx: any,
     @Args('username') username: string,
     @Args('password') password: string,
   ): Promise<TokenResponse> {
@@ -25,26 +25,26 @@ export class AuthResolver {
     }
 
     const token = await this.authService.generateToken(user.id);
-    const payload = await AuthHelper.secureJwtToken(req, token);
+    const payload = await AuthHelper.secureJwtToken(ctx.req, token);
 
     return composeResult({ data: payload });
   }
 
   @Mutation(() => SimpleResponse, { name: 'logout' })
   public async logout(
-    @Request() req: any,
+    @Context() ctx: any,
     @Args('refreshToken') refreshToken: string,
   ): Promise<SimpleResponse> {
     await this.authService.logout(refreshToken);
 
-    AuthHelper.clearSignature(req);
+    AuthHelper.clearSignature(ctx.req);
 
     return composeResult();
   }
 
   @Mutation(() => TokenResponse, { name: 'refresh' })
   public async refresh(
-    @Request() req: any,
+    @Context() ctx: any,
     @Args('refreshToken') refreshToken: string,
     @Args('accessToken') accessToken: string,
   ): Promise<TokenResponse> {
@@ -57,7 +57,7 @@ export class AuthResolver {
 
     const token = await this.authService.refresh(
       refreshToken,
-      AuthHelper.createJwtSecureToken(req, accessToken),
+      AuthHelper.createJwtSecureToken(ctx.req, accessToken),
     );
 
     if (!token) {
@@ -67,7 +67,7 @@ export class AuthResolver {
       });
     }
 
-    const payload = await AuthHelper.secureJwtToken(req, token);
+    const payload = await AuthHelper.secureJwtToken(ctx.req, token);
 
     return composeResult({ data: payload });
   }
