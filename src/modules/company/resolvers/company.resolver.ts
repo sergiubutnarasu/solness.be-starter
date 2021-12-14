@@ -1,9 +1,13 @@
-import { UseGuards } from '@nestjs/common';
+import { NotFoundException, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser, Roles } from '~/modules/auth/decorators';
 import { GraphQlAuthGuard, GraphQlRolesGuard } from '~/modules/auth/guards';
-import { composeResult, PageListInput, UserContext } from '~/modules/core';
-import { Role } from '~/modules/user';
+import {
+  composeResult,
+  PageListInput,
+  Role,
+  UserContext,
+} from '~/modules/core';
 import {
   Company,
   CompanyInput,
@@ -52,10 +56,7 @@ export class CompanyResolver {
     const model = await this.service.get(id, user);
 
     if (!model) {
-      return composeResult({
-        success: false,
-        messages: ['Company not found.'],
-      });
+      throw new NotFoundException('Company not found.');
     }
 
     return composeResult({ data: model });

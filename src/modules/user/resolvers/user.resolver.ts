@@ -1,4 +1,8 @@
-import { UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  NotFoundException,
+  UseGuards,
+} from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Roles } from '~/modules/auth/decorators';
 import { GraphQlAuthGuard, GraphQlRolesGuard } from '~/modules/auth/guards';
@@ -6,11 +10,11 @@ import {
   composeResult,
   CurrentUser,
   PageListInput,
+  Role,
   UserContext,
 } from '~/modules/core';
 import {
   PaginatedUserResponse,
-  Role,
   User,
   UserInput,
   UserResponse,
@@ -54,10 +58,7 @@ export class UserResolver {
     const model = await this.service.get(id, user);
 
     if (!model) {
-      return composeResult({
-        success: false,
-        messages: ['User not found.'],
-      });
+      throw new NotFoundException('User not found.');
     }
 
     return composeResult({ data: model });
@@ -92,10 +93,7 @@ export class UserResolver {
     @CurrentUser() user: UserContext,
   ): Promise<UserResponse> {
     if (id === user.id) {
-      return composeResult({
-        success: false,
-        messages: ['Cannot delete the current user.'],
-      });
+      throw new BadRequestException('Cannot delete the current user.');
     }
 
     const result = await this.service.delete(id, user);

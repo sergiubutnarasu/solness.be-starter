@@ -28,7 +28,12 @@ export abstract class BaseService<
 
   public async delete(id: number, user: UserContext): Promise<TEntity> {
     const entity = await this.get(id, user);
-    return await this.repo.remove(entity);
+
+    if (entity) {
+      return await this.repo.remove(entity);
+    }
+
+    return;
   }
 
   public async findAndCount<TRequest extends PageListInput>(

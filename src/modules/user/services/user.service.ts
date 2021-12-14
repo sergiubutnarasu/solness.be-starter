@@ -3,6 +3,7 @@ import { SelectQueryBuilder } from 'typeorm';
 import {
   BaseService,
   CryptoHelper,
+  Role,
   StringHelper,
   UserContext,
 } from '~/modules/core';
@@ -14,8 +15,17 @@ import { UserRepository } from '../repositories';
 export class UserService extends BaseService<User> {
   protected addAccessCondition(
     query: SelectQueryBuilder<User>,
+    user: UserContext,
   ): SelectQueryBuilder<User> {
-    return query;
+    if (user.role === Role.Admin) {
+      return query;
+    }
+
+    return query
+      .innerJoin('companyUsers', 'COMPANIES', 'GENERIC.id = COMPANIES.userId')
+      .andWhere('COMPANIES.companyId = :companyId', {
+        companyId: '1', // get company id from user context
+      });
   }
 
   constructor(

@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
-import { AppConfigKey, AppHelper, CryptoHelper } from '~/modules/core';
-import { Role, User } from '../modules/user';
+import { AppConfigKey, AppHelper, CryptoHelper, Role } from '~/modules/core';
+import { User } from '../modules/user';
 
 export class DefaultSetup1567498401541 implements MigrationInterface {
   async up(queryRunner: QueryRunner): Promise<any> {
