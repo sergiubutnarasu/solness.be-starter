@@ -54,7 +54,7 @@ export abstract class BaseService<
     const conditionQuery = this.addAccessCondition(query, user);
     const [results, count] = await conditionQuery.getManyAndCount();
 
-    return { data: results, total: count, success: true };
+    return { data: results, total: count };
   }
 
   public async get(id: number, user: UserContext): Promise<TEntity> {

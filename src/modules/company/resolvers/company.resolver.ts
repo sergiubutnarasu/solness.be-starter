@@ -48,18 +48,18 @@ export class CompanyResolver {
    * @param id - Company identifier
    * @returns Company response
    */
-  @Query(() => CompanyResponse, { name: 'company' })
+  @Query(() => Company, { name: 'company', nullable: true })
   public async get(
     @Args('id') id: number,
     @CurrentUser() user: UserContext,
-  ): Promise<CompanyResponse> {
+  ): Promise<Company> {
     const model = await this.service.get(id, user);
 
     if (!model) {
       throw new NotFoundException('Company not found.');
     }
 
-    return composeResult({ data: model });
+    return model;
   }
 
   /**

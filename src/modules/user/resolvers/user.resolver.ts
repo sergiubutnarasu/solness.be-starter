@@ -41,7 +41,7 @@ export class UserResolver {
   ) {
     const result = await this.service.findAndCount(request, user);
 
-    return composeResult({ ...result });
+    return result;
   }
 
   /**
@@ -50,18 +50,18 @@ export class UserResolver {
    * @param id - User identifier
    * @returns User response
    */
-  @Query(() => UserResponse, { name: 'user' })
+  @Query(() => User, { name: 'user', nullable: true })
   public async get(
     @Args('id') id: number,
     @CurrentUser() user: UserContext,
-  ): Promise<UserResponse> {
+  ): Promise<User> {
     const model = await this.service.get(id, user);
 
     if (!model) {
       throw new NotFoundException('User not found.');
     }
 
-    return composeResult({ data: model });
+    return model;
   }
 
   /**
