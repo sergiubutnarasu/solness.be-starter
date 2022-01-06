@@ -8,16 +8,26 @@ import { CompanyUser } from './company-user.entity';
 @InputType({ isAbstract: true })
 export class Company extends BaseEntity {
   @Field()
-  @Column()
+  @Column({
+    length: 250,
+    transformer: EncryptTransform,
+  })
   name: string;
 
   @Field()
   @Column({
     length: 150,
-    unique: true,
     transformer: EncryptTransform,
   })
   email: string;
+
+  @Field()
+  @Column({
+    length: 25,
+    unique: true,
+    transformer: EncryptTransform,
+  })
+  registerNumber: string;
 
   @Field()
   @Column({

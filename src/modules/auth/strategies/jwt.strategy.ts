@@ -20,8 +20,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const userId = payload.sub;
     const user = await this.userService.getUserAuthPayload(userId);
 
-    user.data.companyId = 'test';
-
     if (!user) {
       throw new BadRequestException();
     }

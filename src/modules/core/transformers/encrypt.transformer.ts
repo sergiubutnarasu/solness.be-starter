@@ -8,20 +8,14 @@ const EncryptTransform: ValueTransformer = {
       return value;
     }
 
-    return CryptoHelper.decrypt(
-      AppHelper.getConfig(AppConfigKey.DefaultEncryptionKey),
-      value,
-    );
+    return CryptoHelper.decryptValue(value);
   },
   to(value: any) {
     if (!value) {
       return value;
     }
 
-    return CryptoHelper.encrypt(
-      AppHelper.getConfig(AppConfigKey.DefaultEncryptionKey),
-      `${value}`,
-    );
+    return CryptoHelper.encryptValue(`${value}`);
   },
 };
 

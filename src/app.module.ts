@@ -12,8 +12,9 @@ import {
   Environment,
 } from './modules/core';
 import { UserModule } from './modules/user';
+import { ViewerModule } from './modules/viewer';
 
-const appModules = [AuthModule, UserModule, CompanyModule];
+const appModules = [AuthModule, ViewerModule, UserModule, CompanyModule];
 
 @Module({
   imports: [

@@ -44,6 +44,7 @@ type Company {
   enabled: Boolean!
   name: String!
   email: String!
+  registerNumber: String!
   phone: String!
   users: [CompanyUser!]
 }
@@ -67,9 +68,25 @@ type PaginatedCompanyResponse {
   total: Int!
 }
 
+type Permission {
+  user: UserAction!
+}
+
+type UserAction {
+  canView: Boolean!
+  canCreate: Boolean!
+  canUpdate: Boolean!
+  canDelete: Boolean!
+}
+
+type Viewer {
+  permissions: Permission!
+}
+
 type Query {
   users(request: PageListInput): PaginatedUserResponse!
   user(id: Float!): User
+  viewer: Viewer!
   companies(request: PageListInput): PaginatedCompanyResponse!
   company(id: Float!): Company
 }
@@ -102,6 +119,7 @@ input CompanyInput {
   enabled: Boolean!
   name: String!
   email: String!
+  registerNumber: String!
   phone: String!
   users: [CompanyUserInput!]
 }

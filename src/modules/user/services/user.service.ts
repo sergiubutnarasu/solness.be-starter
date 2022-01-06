@@ -24,7 +24,7 @@ export class UserService extends BaseService<User> {
     return query
       .innerJoin('companyUsers', 'COMPANIES', 'GENERIC.id = COMPANIES.userId')
       .andWhere('COMPANIES.companyId = :companyId', {
-        companyId: '1', // get company id from user context
+        companyId: user.data.companyId,
       });
   }
 
@@ -78,16 +78,8 @@ export class UserService extends BaseService<User> {
   }
 
   public async getUserAuthPayload(userId: number): Promise<UserContext> {
-    const data = await this.repo.findOne(userId);
+    const context = await this.repo.getUserAuthPayload(userId);
 
-    return {
-      email: data.email,
-      id: data.id,
-      role: data.role,
-      data: {
-        firstName: data.firstName,
-        lastName: data.lastName,
-      },
-    };
+    return context;
   }
 }

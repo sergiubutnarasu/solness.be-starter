@@ -1,3 +1,3 @@
 export type KeyValue = {
-  [key: string]: string;
+  [key: string]: unknown;
 };

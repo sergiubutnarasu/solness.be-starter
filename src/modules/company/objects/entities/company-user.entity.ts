@@ -1,8 +1,7 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, ManyToOne } from 'typeorm';
-import { BaseEntity } from '~/modules/core';
+import { BaseEntity, CompanyRole } from '~/modules/core';
 import { User } from '~/modules/user';
-import { CompanyRole } from '../enums';
 import { Company } from './company.entity';
 
 @Entity('companyUsers')

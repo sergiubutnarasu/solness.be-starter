@@ -1,5 +1,5 @@
 export { CurrentUser } from './decorators';
-export { Role } from './enums';
+export { CompanyRole, Role } from './enums';
 export { GraphQLFilter } from './filters';
 export {
   AppHelper,

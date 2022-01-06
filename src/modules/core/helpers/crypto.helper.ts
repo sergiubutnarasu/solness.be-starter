@@ -1,5 +1,7 @@
 import * as bcrypt from 'bcryptjs';
 import * as crypto from 'crypto';
+import { AppConfigKey } from '../objects';
+import AppHelper from './app.helper';
 class CryptoHelperClass {
   private static instance: CryptoHelperClass;
 
@@ -48,6 +50,20 @@ class CryptoHelperClass {
     decrypted += decipher.final();
 
     return decrypted;
+  }
+
+  public encryptValue(value: string) {
+    return this.encrypt(
+      AppHelper.getConfig(AppConfigKey.DefaultEncryptionKey),
+      `${value}`,
+    );
+  }
+
+  public decryptValue(value: string) {
+    return this.decrypt(
+      AppHelper.getConfig(AppConfigKey.DefaultEncryptionKey),
+      value,
+    );
   }
 
   private hashSecretKey(secretKey: string) {

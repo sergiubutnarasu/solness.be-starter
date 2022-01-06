@@ -41,10 +41,12 @@ class AuthHelperClass {
 
   public secureJwtToken(req: Request, token: any): Promise<TokenPayload> {
     const jwtToken = token;
+    const isDevelopment = AppHelper.checkEnvironment(Environment.Development);
+
     req.res.cookie('signature', token.signature, {
       expires: DateHelper.addDays(100),
       httpOnly: true,
-      secure: !AppHelper.checkEnvironment(Environment.Development),
+      secure: !isDevelopment,
       domain: this.getDefaultLinkDomain(),
       path: '/',
       sameSite: 'lax',
