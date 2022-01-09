@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { checkPageAction } from '~/modules/core';
+import { checkPageAction } from '../helpers';
 import { AccessType } from '../objects';
 
 @Injectable()

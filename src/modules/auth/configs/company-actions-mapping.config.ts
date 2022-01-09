@@ -1,4 +1,5 @@
-import { CompanyActionType, CompanyRole } from '../objects';
+import { CompanyRole } from '~/modules/core';
+import { CompanyActionType } from '../objects';
 
 export const CompanyActionsMapping: Record<CompanyActionType, CompanyRole[]> = {
   view: [CompanyRole.Owner, CompanyRole.User],

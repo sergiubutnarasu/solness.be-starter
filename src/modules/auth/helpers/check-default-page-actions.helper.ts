@@ -1,4 +1,5 @@
-import { ActionType, LocationType, UserContext } from '../objects';
+import { UserContext } from '~/modules/core';
+import { ActionType, LocationType } from '../objects';
 import checkPageAction from './check-page-action.helper';
 
 const checkDefaultPageActions = (

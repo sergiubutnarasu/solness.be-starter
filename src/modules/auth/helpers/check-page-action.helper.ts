@@ -1,11 +1,6 @@
+import { CompanyRole, UserContext } from '~/modules/core';
 import { CompanyActionsMapping, UserActionsMapping } from '../configs';
-import {
-  CompanyActionType,
-  CompanyRole,
-  LocationType,
-  UserActionType,
-  UserContext,
-} from '../objects';
+import { CompanyActionType, LocationType, UserActionType } from '../objects';
 
 type Action = UserActionType | CompanyActionType;
 

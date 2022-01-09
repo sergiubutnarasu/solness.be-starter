@@ -9,11 +9,4 @@ export {
   PaginatedResponse,
   SimpleResponse,
 } from './response';
-export {
-  ActionType,
-  KeyValue,
-  LocationType,
-  UserActionType,
-  CompanyActionType,
-  UserContext,
-} from './types';
+export { KeyValue, UserContext } from './types';

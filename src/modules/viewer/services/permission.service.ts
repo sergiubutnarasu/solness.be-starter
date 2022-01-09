@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { checkDefaultPageActions, UserContext } from '~/modules/core';
+import { checkDefaultPageActions } from '~/modules/auth/helpers';
+import { UserContext } from '~/modules/core';
 import { Permission } from '../objects';
 
 @Injectable()

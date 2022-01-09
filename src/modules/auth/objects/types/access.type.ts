@@ -1,3 +1,3 @@
-import { ActionType, LocationType } from '~/modules/core';
+import { ActionType, LocationType } from './action.type';
 
 export type AccessType = { page: LocationType; action: ActionType };
