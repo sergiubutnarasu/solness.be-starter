@@ -1,4 +1,6 @@
 export { default as AppHelper } from './app.helper';
+export { default as checkDefaultPageActions } from './check-default-page-actions.helper';
+export { default as checkPageAction } from './check-page-action.helper';
 export { default as composeResult } from './compose-result.helper';
 export { default as CryptoHelper } from './crypto.helper';
 export { default as DateHelper } from './date.helper';

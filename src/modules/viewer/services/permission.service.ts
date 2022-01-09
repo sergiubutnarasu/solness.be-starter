@@ -1,15 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { UserContext } from '~/modules/core';
+import { checkDefaultPageActions, UserContext } from '~/modules/core';
 import { Permission } from '../objects';
-import { UserActionService } from './user-action.service';
 
 @Injectable()
 export class PermissionService {
-  constructor(private readonly userActionService: UserActionService) {}
-
   public compute(user: UserContext): Permission {
-    const userActions = this.userActionService.compute(user);
+    const userActions = checkDefaultPageActions(user, 'User');
+    const companyActions = checkDefaultPageActions(user, 'Company');
 
-    return { user: userActions };
+    return { user: userActions, company: companyActions };
   }
 }

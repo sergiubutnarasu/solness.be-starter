@@ -1,8 +1,9 @@
 export { CurrentUser } from './decorators';
-export { CompanyRole, Role } from './enums';
 export { GraphQLFilter } from './filters';
 export {
   AppHelper,
+  checkDefaultPageActions,
+  checkPageAction,
   composeResult,
   CryptoHelper,
   DateHelper,
@@ -10,17 +11,21 @@ export {
   StringHelper,
 } from './helpers';
 export {
+  ActionType,
   AppConfigKey,
   BaseEntity,
   BasePageListInput,
+  CompanyRole,
   Environment,
   GenericResponse,
   GraphQLGenericResponse,
   GraphQLPaginatedResponse,
   KeyValue,
+  LocationType,
   PageListInput,
   PaginatedResponse,
   RelationModel,
+  Role,
   SimpleResponse,
   UserContext,
 } from './objects';

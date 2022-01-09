@@ -1,5 +1,5 @@
 export { BaseEntity } from './entities';
-export { AppConfigKey, Environment } from './enums';
+export { AppConfigKey, CompanyRole, Environment, Role } from './enums';
 export { BasePageListInput, PageListInput } from './inputs';
 export { RelationModel } from './model';
 export {
@@ -9,4 +9,11 @@ export {
   PaginatedResponse,
   SimpleResponse,
 } from './response';
-export { KeyValue, UserContext } from './types';
+export {
+  ActionType,
+  KeyValue,
+  LocationType,
+  UserActionType,
+  CompanyActionType,
+  UserContext,
+} from './types';

@@ -23,6 +23,10 @@ export class GraphQlRolesGuard implements CanActivate {
     const request = ctx.getContext().req;
     const user = request.user;
 
+    if (user?.data?.isAdmin) {
+      return true;
+    }
+
     const hasRole = () => roles.some((role) => role === user.role);
     return user && user.role && hasRole();
   }

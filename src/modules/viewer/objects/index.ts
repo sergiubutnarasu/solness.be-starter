@@ -1,1 +1,1 @@
-export { Permission, UserAction, Viewer } from './types';
+export { Permission, Viewer } from './types';

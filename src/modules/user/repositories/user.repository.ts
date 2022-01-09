@@ -19,7 +19,7 @@ export class UserRepository extends BaseRepository<User> {
           USER.firstName,
           USER.lastName,
           COMPANY_USERS.companyId,
-          COMPANY_USERS.role as companyRole
+          COMPANY_USERS.roles as companyRoles
         FROM user USER
         LEFT JOIN companyUsers COMPANY_USERS
           ON COMPANY_USERS.userId = USER.id
@@ -43,7 +43,7 @@ export class UserRepository extends BaseRepository<User> {
       data: {
         isAdmin,
         companyId: data.companyId,
-        companyRole: data.companyRole,
+        companyRoles: ((data.companyRoles as string) ?? '').split(','),
         firstName: data.firstName,
         lastName: data.lastName,
       },

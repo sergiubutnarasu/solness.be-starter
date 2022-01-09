@@ -54,7 +54,7 @@ type CompanyUser {
   enabled: Boolean!
   userId: Float!
   companyId: Float!
-  role: String!
+  roles: [String!]!
 }
 
 type CompanyResponse {
@@ -68,15 +68,30 @@ type PaginatedCompanyResponse {
   total: Int!
 }
 
-type Permission {
-  user: UserAction!
+type CompanyAction implements BaseAction {
+  view: Boolean!
+  create: Boolean!
+  update: Boolean!
+  delete: Boolean!
 }
 
-type UserAction {
-  canView: Boolean!
-  canCreate: Boolean!
-  canUpdate: Boolean!
-  canDelete: Boolean!
+interface BaseAction {
+  view: Boolean!
+  create: Boolean!
+  update: Boolean!
+  delete: Boolean!
+}
+
+type UserAction implements BaseAction {
+  view: Boolean!
+  create: Boolean!
+  update: Boolean!
+  delete: Boolean!
+}
+
+type Permission {
+  user: UserAction!
+  company: CompanyAction!
 }
 
 type Viewer {
@@ -100,9 +115,11 @@ type Mutation {
   login(password: String!, username: String!): TokenResponse!
   logout(refreshToken: String!): SimpleResponse!
   refresh(accessToken: String!, refreshToken: String!): TokenResponse!
-  saveUser(model: UserInput!): UserResponse!
+  createUser(model: UserInput!): UserResponse!
+  updateUser(model: UserInput!): UserResponse!
   deleteUser(id: Float!): UserResponse!
-  saveCompany(model: CompanyInput!): CompanyResponse!
+  createCompany(model: CompanyInput!): CompanyResponse!
+  updateCompany(model: CompanyInput!): CompanyResponse!
   deleteCompany(id: Float!): CompanyResponse!
 }
 
@@ -129,5 +146,5 @@ input CompanyUserInput {
   enabled: Boolean!
   userId: Float!
   companyId: Float!
-  role: String!
+  roles: [String!]!
 }

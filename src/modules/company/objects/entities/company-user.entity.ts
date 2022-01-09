@@ -22,7 +22,11 @@ export class CompanyUser extends BaseEntity {
   @ManyToOne(() => Company, (company) => company.users)
   company?: Company;
 
-  @Field()
-  @Column({ type: 'enum', enum: CompanyRole, default: CompanyRole.User })
-  role: CompanyRole;
+  @Field(() => [String])
+  @Column({
+    type: 'set',
+    enum: CompanyRole,
+    default: [CompanyRole.User],
+  })
+  roles: CompanyRole[];
 }

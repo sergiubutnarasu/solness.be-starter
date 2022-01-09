@@ -1,6 +1,8 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
+import { checkPageAction } from '~/modules/core';
+import { AccessType } from '../objects';
 
 @Injectable()
 export class GraphQlAccessGuard implements CanActivate {
@@ -14,18 +16,19 @@ export class GraphQlAccessGuard implements CanActivate {
     const request = ctx.getContext().req;
     const user = request.user;
 
-    if (user?.data?.isAdmin) {
+    let access = this.reflector.get<AccessType>('access', methodHandler);
+    if (!access) {
+      access = this.reflector.get<AccessType>('access', classHandler);
+    }
+
+    if (!access) {
       return true;
     }
 
-    const accessType = this.reflector.get<string>('access', methodHandler);
-    const moduleType = this.reflector.get<string>('access', classHandler);
-
-    const hasPrivileges = () =>
-      user?.data?.privileges?.some(
-        (item) => item.module === moduleType && item[accessType] === 1,
-      );
-
-    return hasPrivileges();
+    return checkPageAction({
+      user,
+      page: access.page,
+      action: access.action,
+    });
   }
 }

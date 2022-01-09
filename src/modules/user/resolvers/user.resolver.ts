@@ -4,13 +4,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Roles } from '~/modules/auth/decorators';
-import { GraphQlAuthGuard, GraphQlRolesGuard } from '~/modules/auth/guards';
+import { Access } from '~/modules/auth/decorators';
+import { GraphQlAccessGuard, GraphQlAuthGuard } from '~/modules/auth/guards';
 import {
   composeResult,
   CurrentUser,
   PageListInput,
-  Role,
   UserContext,
 } from '~/modules/core';
 import {
@@ -21,8 +20,7 @@ import {
 } from '../objects';
 import { UserService } from '../services';
 
-@UseGuards(GraphQlAuthGuard, GraphQlRolesGuard)
-@Roles(Role.Admin)
+@UseGuards(GraphQlAuthGuard, GraphQlAccessGuard)
 @Resolver(() => User)
 export class UserResolver {
   constructor(private readonly service: UserService) {}
@@ -33,6 +31,7 @@ export class UserResolver {
    * @param user Current logged user
    * @returns Returns user response that contains a list of users
    */
+  @Access({ page: 'User', action: 'view' })
   @Query(() => PaginatedUserResponse, { name: 'users' })
   public async find(
     @Args('request', { nullable: true })
@@ -50,6 +49,7 @@ export class UserResolver {
    * @param id - User identifier
    * @returns User response
    */
+  @Access({ page: 'User', action: 'view' })
   @Query(() => User, { name: 'user', nullable: true })
   public async get(
     @Args('id') id: number,
@@ -65,18 +65,37 @@ export class UserResolver {
   }
 
   /**
-   * Use this method to create or update an user
+   * Use this method to create an user
    * @param user Current logged user
    * @param model The user details
    * @returns User response
    */
-  @Mutation(() => UserResponse, { name: 'saveUser' })
-  public async save(
+  @Access({ page: 'User', action: 'create' })
+  @Mutation(() => UserResponse, { name: 'createUser' })
+  public async create(
     @Args({ name: 'model', type: () => UserInput })
     model: User,
     @CurrentUser() user: UserContext,
   ): Promise<UserResponse> {
-    const result = await this.service.save(model, user);
+    const result = await this.service.create(model, user);
+
+    return composeResult({ data: result });
+  }
+
+  /**
+   * Use this method to update an user
+   * @param user Current logged user
+   * @param model The user details
+   * @returns User response
+   */
+  @Access({ page: 'User', action: 'update' })
+  @Mutation(() => UserResponse, { name: 'updateUser' })
+  public async update(
+    @Args({ name: 'model', type: () => UserInput })
+    model: User,
+    @CurrentUser() user: UserContext,
+  ): Promise<UserResponse> {
+    const result = await this.service.update(model.id, model, user);
 
     return composeResult({ data: result });
   }
@@ -87,6 +106,7 @@ export class UserResolver {
    * @param id The user ID that will be deleted
    * @returns User response
    */
+  @Access({ page: 'User', action: 'delete' })
   @Mutation(() => UserResponse, { name: 'deleteUser' })
   public async delete(
     @Args('id') id: number,

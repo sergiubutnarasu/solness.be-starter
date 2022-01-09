@@ -23,7 +23,7 @@ export class Company extends BaseEntity {
 
   @Field()
   @Column({
-    length: 25,
+    length: 150,
     unique: true,
     transformer: EncryptTransform,
   })
