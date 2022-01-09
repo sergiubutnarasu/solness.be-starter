@@ -36,7 +36,6 @@ export class Company extends BaseEntity {
   })
   phone: string;
 
-  @Field(() => [CompanyUser], { nullable: true })
   @OneToMany(() => CompanyUser, (companyUser) => companyUser.company)
   users?: CompanyUser[];
 }

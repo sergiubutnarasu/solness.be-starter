@@ -1,5 +1,5 @@
 import { NotFoundException, UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { Access, CurrentUser } from '~/modules/auth/decorators';
 import { GraphQlAccessGuard, GraphQlAuthGuard } from '~/modules/auth/guards';
 import { composeResult, PageListInput, UserContext } from '~/modules/core';
@@ -7,6 +7,7 @@ import {
   Company,
   CompanyInput,
   CompanyResponse,
+  CompanyUser,
   PaginatedCompanyResponse,
 } from '../objects';
 import { CompanyService, CompanyUserService } from '../services';
@@ -109,5 +110,10 @@ export class CompanyResolver {
     const result = await this.service.delete(id, user);
 
     return composeResult({ data: result });
+  }
+
+  @ResolveField(() => [CompanyUser], { nullable: true })
+  public async users() {
+    return await this.companyUserService.find();
   }
 }

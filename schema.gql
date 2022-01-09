@@ -53,6 +53,7 @@ type CompanyUser {
   id: Int
   enabled: Boolean!
   userId: Float!
+  user: User!
   companyId: Float!
   roles: [String!]!
 }

@@ -1,6 +1,5 @@
 import { ValueTransformer } from 'typeorm';
-import { AppHelper, CryptoHelper } from '../helpers';
-import { AppConfigKey } from '../objects/enums';
+import { CryptoHelper } from '../helpers';
 
 const EncryptTransform: ValueTransformer = {
   from(value: any) {
