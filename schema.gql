@@ -47,7 +47,12 @@ type Company {
   email: String!
   registerNumber: String!
   phone: String!
-  users: [CompanyUser!]
+  users(request: PageListInput): PaginatedCompanyUserResponse
+}
+
+input PageListInput {
+  page: Float = 0
+  pageSize: Float = 10
 }
 
 type CompanyUser {
@@ -64,6 +69,11 @@ type CompanyResponse {
   data: Company
   success: Boolean!
   messages: [String!]
+}
+
+type PaginatedCompanyUserResponse {
+  data: [CompanyUser!]
+  total: Int!
 }
 
 type PaginatedCompanyResponse {
@@ -109,11 +119,6 @@ type Query {
   viewer: Viewer!
   companies(request: PageListInput): PaginatedCompanyResponse!
   company(id: Float!): Company
-}
-
-input PageListInput {
-  page: Float = 1
-  pageSize: Float = 10
 }
 
 type Mutation {

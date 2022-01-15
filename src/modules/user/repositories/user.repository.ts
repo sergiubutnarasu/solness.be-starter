@@ -18,11 +18,11 @@ export class UserRepository extends BaseRepository<User> {
           USER.role,
           USER.firstName,
           USER.lastName,
-          COMPANY_USERS.companyId,
-          COMPANY_USERS.roles as companyRoles
+          COMPANY_USER.companyId,
+          COMPANY_USER.roles as companyRoles
         FROM user USER
-        LEFT JOIN companyUsers COMPANY_USERS
-          ON COMPANY_USERS.userId = USER.id
+        LEFT JOIN companyUser COMPANY_USER
+          ON COMPANY_USER.userId = USER.id
         WHERE
           USER.id = ?
             AND USER.enabled = 1

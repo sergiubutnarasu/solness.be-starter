@@ -16,7 +16,7 @@ export class CompanyService extends BaseService<Company> {
 
     return query
       .innerJoin(
-        'companyUsers',
+        'companyUser',
         'COMPANY_USER',
         'GENERIC.id = COMPANY_USER.companyId',
       )

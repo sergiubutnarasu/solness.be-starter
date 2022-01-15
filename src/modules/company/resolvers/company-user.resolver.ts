@@ -4,7 +4,6 @@ import { Access, CurrentUser } from '~/modules/auth/decorators';
 import { GraphQlAccessGuard, GraphQlAuthGuard } from '~/modules/auth/guards';
 import { Page } from '~/modules/auth/objects';
 import { composeResult, SimpleResponse, UserContext } from '~/modules/core';
-import { UserService } from '~/modules/user';
 import { CompanyUser, InviteUserInput } from '../objects';
 import { CompanyUserService } from '../services';
 

@@ -3,6 +3,9 @@ import { SelectQueryBuilder } from 'typeorm';
 import {
   BaseService,
   CryptoHelper,
+  PageListInput,
+  PaginatedResponse,
+  PaginationHelper,
   Role,
   StringHelper,
   UserContext,
@@ -31,6 +34,24 @@ export class CompanyUserService extends BaseService<CompanyUser> {
     private readonly userService: UserService,
   ) {
     super(repo);
+  }
+
+  public async findAndCount<TRequest extends PageListInput>(
+    request: TRequest,
+    user: UserContext,
+  ): Promise<PaginatedResponse<CompanyUser>> {
+    const skip = PaginationHelper.calculateOffset(
+      request.page,
+      request.pageSize,
+    );
+
+    const [data, total] = await this.repo.findAndCount({
+      skip,
+      take: request.pageSize,
+      where: { companyId: user.data.companyId, enabled: true },
+    });
+
+    return { data, total };
   }
 
   public async inviteUser(

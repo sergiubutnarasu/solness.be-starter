@@ -22,8 +22,12 @@ export class UserService extends BaseService<User> {
     }
 
     return query
-      .innerJoin('companyUsers', 'COMPANIES', 'GENERIC.id = COMPANIES.userId')
-      .andWhere('COMPANIES.companyId = :companyId', {
+      .innerJoin(
+        'companyUser',
+        'COMPANY_USER',
+        'GENERIC.id = COMPANY_USER.userId',
+      )
+      .andWhere('COMPANY_USER.companyId = :companyId', {
         companyId: user.data.companyId,
       });
   }

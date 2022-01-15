@@ -4,7 +4,7 @@ import { BaseEntity, CompanyRole } from '~/modules/core';
 import { User } from '~/modules/user/objects';
 import { Company } from './company.entity';
 
-@Entity('companyUsers')
+@Entity('companyUser')
 @ObjectType()
 @InputType({ isAbstract: true })
 export class CompanyUser extends BaseEntity {

@@ -1,5 +1,12 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
-import { AppConfigKey, AppHelper, CryptoHelper, Role } from '~/modules/core';
+import { Company, CompanyUser } from '~/modules/company/objects';
+import {
+  AppConfigKey,
+  AppHelper,
+  CompanyRole,
+  CryptoHelper,
+  Role,
+} from '~/modules/core';
 import { User } from '../modules/user/objects';
 
 export class DefaultSetup1567498401541 implements MigrationInterface {
@@ -8,7 +15,9 @@ export class DefaultSetup1567498401541 implements MigrationInterface {
       AppHelper.getConfig(AppConfigKey.DefaultUserPassword),
     );
 
-    await queryRunner.manager.insert<User>('user', {
+    const {
+      raw: { insertId: userId },
+    } = await queryRunner.manager.insert<User>('user', {
       enabled: true,
       verified: true,
       createdUserId: 0,
@@ -18,6 +27,28 @@ export class DefaultSetup1567498401541 implements MigrationInterface {
       firstName: 'Admin',
       lastName: 'User',
       role: Role.Admin,
+    });
+
+    const {
+      raw: { insertId: companyId },
+    } = await queryRunner.manager.insert<Company>('company', {
+      enabled: true,
+      createdUserId: 0,
+      createdDatetime: new Date(),
+      name: 'Solness',
+      email: AppHelper.getConfig(AppConfigKey.DefaultUsername),
+      phone: 'Phone number',
+      registerNumber: 'CUI',
+    });
+
+    await queryRunner.manager.insert<CompanyUser>('companyUser', {
+      enabled: true,
+      verified: true,
+      createdUserId: 0,
+      createdDatetime: new Date(),
+      userId,
+      companyId,
+      roles: [CompanyRole.Owner],
     });
   }
 

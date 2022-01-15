@@ -1,3 +1,7 @@
 export { Company, CompanyUser } from './entities';
 export { CompanyInput, InviteUserInput } from './inputs';
-export { CompanyResponse, PaginatedCompanyResponse } from './response';
+export {
+  CompanyResponse,
+  PaginatedCompanyResponse,
+  PaginatedCompanyUserResponse,
+} from './response';

@@ -4,10 +4,19 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Access, CurrentUser } from '~/modules/auth/decorators';
-import { GraphQlAccessGuard, GraphQlAuthGuard } from '~/modules/auth/guards';
+import { Access, CurrentUser, Roles } from '~/modules/auth/decorators';
+import {
+  GraphQlAccessGuard,
+  GraphQlAuthGuard,
+  GraphQlRolesGuard,
+} from '~/modules/auth/guards';
 import { Page } from '~/modules/auth/objects';
-import { composeResult, PageListInput, UserContext } from '~/modules/core';
+import {
+  composeResult,
+  PageListInput,
+  Role,
+  UserContext,
+} from '~/modules/core';
 import {
   PaginatedUserResponse,
   User,
@@ -16,7 +25,7 @@ import {
 } from '../objects';
 import { UserService } from '../services';
 
-@UseGuards(GraphQlAuthGuard, GraphQlAccessGuard)
+@UseGuards(GraphQlAuthGuard, GraphQlAccessGuard, GraphQlRolesGuard)
 @Resolver(() => User)
 export class UserResolver {
   constructor(private readonly service: UserService) {}
@@ -27,7 +36,7 @@ export class UserResolver {
    * @param user Current logged user
    * @returns Returns user response that contains a list of users
    */
-  @Access({ page: Page.User, action: 'view' })
+  @Roles(Role.Admin)
   @Query(() => PaginatedUserResponse, { name: 'users' })
   public async find(
     @Args('request', { nullable: true })
@@ -91,7 +100,7 @@ export class UserResolver {
     @Args('id', { nullable: true }) id: number,
   ): Promise<UserResponse> {
     if (user.data.isAdmin && id === user.id) {
-      throw new BadRequestException('Cannot delete the admin user.');
+      throw new BadRequestException('Cannot delete the current admin user.');
     }
 
     const userId = user.data.isAdmin ? id : user.id;

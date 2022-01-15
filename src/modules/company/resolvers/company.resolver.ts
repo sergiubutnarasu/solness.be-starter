@@ -8,8 +8,8 @@ import {
   Company,
   CompanyInput,
   CompanyResponse,
-  CompanyUser,
   PaginatedCompanyResponse,
+  PaginatedCompanyUserResponse,
 } from '../objects';
 import { CompanyService, CompanyUserService } from '../services';
 
@@ -36,7 +36,7 @@ export class CompanyResolver {
   ) {
     const result = await this.service.findAndCount(request, user);
 
-    return composeResult({ ...result });
+    return result;
   }
 
   /**
@@ -114,8 +114,13 @@ export class CompanyResolver {
     return composeResult({ data: result });
   }
 
-  @ResolveField(() => [CompanyUser], { nullable: true })
-  public async users() {
-    return await this.companyUserService.find();
+  @Access({ page: Page.Company, action: 'view' })
+  @ResolveField(() => PaginatedCompanyUserResponse, { nullable: true })
+  public async users(
+    @Args('request', { nullable: true })
+    request: PageListInput = { page: 0, pageSize: 10 },
+    @CurrentUser() user: UserContext,
+  ) {
+    return await this.companyUserService.findAndCount(request, user);
   }
 }
