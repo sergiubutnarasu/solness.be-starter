@@ -1,7 +1,7 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { BaseEntity, CompanyRole } from '~/modules/core';
-import { User } from '~/modules/user';
+import { User } from '~/modules/user/objects';
 import { Company } from './company.entity';
 
 @Entity('companyUsers')
@@ -33,5 +33,5 @@ export class CompanyUser extends BaseEntity {
     enum: CompanyRole,
     default: [CompanyRole.User],
   })
-  roles: CompanyRole[];
+  roles?: CompanyRole[];
 }

@@ -122,6 +122,8 @@ type Mutation {
   refresh(accessToken: String!, refreshToken: String!): TokenResponse!
   updateUser(model: UserInput!): UserResponse!
   deleteUser(id: Float): UserResponse!
+  inviteUser(model: InviteUserInput!): SimpleResponse!
+  excludeUser(userId: Float!): SimpleResponse!
   createCompany(model: CompanyInput!): CompanyResponse!
   updateCompany(model: CompanyInput!): CompanyResponse!
   deleteCompany(id: Float!): CompanyResponse!
@@ -130,6 +132,12 @@ type Mutation {
 input UserInput {
   id: Int
   enabled: Boolean!
+  email: String!
+  firstName: String!
+  lastName: String!
+}
+
+input InviteUserInput {
   email: String!
   firstName: String!
   lastName: String!

@@ -18,10 +18,10 @@ export class BaseEntity {
   enabled: boolean;
 
   @Column()
-  createdUserId: number;
+  createdUserId?: number;
 
   @CreateDateColumn()
-  createdDatetime: Date;
+  createdDatetime?: Date;
 
   @Column({ nullable: true })
   modifiedUserId?: number;

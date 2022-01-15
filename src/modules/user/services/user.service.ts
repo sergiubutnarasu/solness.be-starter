@@ -70,7 +70,7 @@ export class UserService extends BaseService<User> {
     return false;
   }
 
-  public async getUserByEmail(email: string): Promise<User> {
+  public async getUserByEmail(email: string): Promise<User | undefined> {
     return await this.findOne({
       email: email,
       enabled: true,

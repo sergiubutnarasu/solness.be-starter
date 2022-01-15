@@ -31,5 +31,5 @@ export class User extends BaseEntity {
 
   @Field()
   @Column({ type: 'enum', enum: Role, default: Role.User })
-  role: Role;
+  role?: Role;
 }
