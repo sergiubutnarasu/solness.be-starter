@@ -4,14 +4,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Access } from '~/modules/auth/decorators';
+import { Access, CurrentUser } from '~/modules/auth/decorators';
 import { GraphQlAccessGuard, GraphQlAuthGuard } from '~/modules/auth/guards';
-import {
-  composeResult,
-  CurrentUser,
-  PageListInput,
-  UserContext,
-} from '~/modules/core';
+import { Page } from '~/modules/auth/objects';
+import { composeResult, PageListInput, UserContext } from '~/modules/core';
 import {
   PaginatedUserResponse,
   User,
@@ -31,7 +27,7 @@ export class UserResolver {
    * @param user Current logged user
    * @returns Returns user response that contains a list of users
    */
-  @Access({ page: 'User', action: 'view' })
+  @Access({ page: Page.User, action: 'view' })
   @Query(() => PaginatedUserResponse, { name: 'users' })
   public async find(
     @Args('request', { nullable: true })
@@ -49,7 +45,7 @@ export class UserResolver {
    * @param id - User identifier
    * @returns User response
    */
-  @Access({ page: 'User', action: 'view' })
+  @Access({ page: Page.User, action: 'view' })
   @Query(() => User, { name: 'user', nullable: true })
   public async get(
     @Args('id') id: number,
@@ -65,37 +61,20 @@ export class UserResolver {
   }
 
   /**
-   * Use this method to create an user
-   * @param user Current logged user
-   * @param model The user details
-   * @returns User response
-   */
-  @Access({ page: 'User', action: 'create' })
-  @Mutation(() => UserResponse, { name: 'createUser' })
-  public async create(
-    @Args({ name: 'model', type: () => UserInput })
-    model: User,
-    @CurrentUser() user: UserContext,
-  ): Promise<UserResponse> {
-    const result = await this.service.create(model, user);
-
-    return composeResult({ data: result });
-  }
-
-  /**
    * Use this method to update an user
    * @param user Current logged user
    * @param model The user details
    * @returns User response
    */
-  @Access({ page: 'User', action: 'update' })
   @Mutation(() => UserResponse, { name: 'updateUser' })
   public async update(
     @Args({ name: 'model', type: () => UserInput })
     model: User,
     @CurrentUser() user: UserContext,
   ): Promise<UserResponse> {
-    const result = await this.service.update(model.id, model, user);
+    const userId = user.data.isAdmin ? model.id : user.id;
+    model.id = userId;
+    const result = await this.service.update(userId, model, user);
 
     return composeResult({ data: result });
   }
@@ -106,17 +85,17 @@ export class UserResolver {
    * @param id The user ID that will be deleted
    * @returns User response
    */
-  @Access({ page: 'User', action: 'delete' })
   @Mutation(() => UserResponse, { name: 'deleteUser' })
   public async delete(
-    @Args('id') id: number,
     @CurrentUser() user: UserContext,
+    @Args('id', { nullable: true }) id: number,
   ): Promise<UserResponse> {
-    if (id === user.id) {
-      throw new BadRequestException('Cannot delete the current user.');
+    if (user.data.isAdmin && id === user.id) {
+      throw new BadRequestException('Cannot delete the admin user.');
     }
 
-    const result = await this.service.delete(id, user);
+    const userId = user.data.isAdmin ? id : user.id;
+    const result = await this.service.delete(userId, user);
 
     return composeResult({ data: result });
   }

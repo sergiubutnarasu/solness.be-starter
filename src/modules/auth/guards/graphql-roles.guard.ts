@@ -1,6 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { GqlExecutionContext } from '@nestjs/graphql';
+import { Role } from '~/modules/core';
+import { getCurrentUser } from '../helpers';
 
 @Injectable()
 export class GraphQlRolesGuard implements CanActivate {
@@ -10,18 +11,16 @@ export class GraphQlRolesGuard implements CanActivate {
     const classHandler = context.getClass();
     const methodHandler = context.getHandler();
 
-    let roles = this.reflector.get<string[]>('roles', methodHandler);
+    let roles = this.reflector.get<Role[]>('roles', methodHandler);
     if (!roles) {
-      roles = this.reflector.get<string[]>('roles', classHandler);
+      roles = this.reflector.get<Role[]>('roles', classHandler);
     }
 
     if (!roles) {
       return true;
     }
 
-    const ctx = GqlExecutionContext.create(context);
-    const request = ctx.getContext().req;
-    const user = request.user;
+    const user = getCurrentUser(context);
 
     if (user?.data?.isAdmin) {
       return true;

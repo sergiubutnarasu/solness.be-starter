@@ -1,6 +1,4 @@
-export type LocationType = 'User' | 'Company';
+export type BaseActionType = 'view' | 'create' | 'update' | 'delete';
 
-export type ActionType = 'view' | 'create' | 'update' | 'delete';
-
-export type UserActionType = ActionType;
-export type CompanyActionType = ActionType;
+export type UserActionType = BaseActionType;
+export type CompanyActionType = BaseActionType | 'inviteUser' | 'excludeUser';

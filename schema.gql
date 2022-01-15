@@ -74,6 +74,8 @@ type CompanyAction implements BaseAction {
   create: Boolean!
   update: Boolean!
   delete: Boolean!
+  inviteUser: Boolean!
+  excludeUser: Boolean!
 }
 
 interface BaseAction {
@@ -116,9 +118,8 @@ type Mutation {
   login(password: String!, username: String!): TokenResponse!
   logout(refreshToken: String!): SimpleResponse!
   refresh(accessToken: String!, refreshToken: String!): TokenResponse!
-  createUser(model: UserInput!): UserResponse!
   updateUser(model: UserInput!): UserResponse!
-  deleteUser(id: Float!): UserResponse!
+  deleteUser(id: Float): UserResponse!
   createCompany(model: CompanyInput!): CompanyResponse!
   updateCompany(model: CompanyInput!): CompanyResponse!
   deleteCompany(id: Float!): CompanyResponse!

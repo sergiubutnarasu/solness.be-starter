@@ -1,6 +1,6 @@
 import { CompanyRole, UserContext } from '~/modules/core';
 import { CompanyActionsMapping, UserActionsMapping } from '../configs';
-import { CompanyActionType, LocationType, UserActionType } from '../objects';
+import { CompanyActionType, Page, UserActionType } from '../objects';
 
 type Action = UserActionType | CompanyActionType;
 
@@ -10,7 +10,7 @@ const checkPageAction = ({
   action,
 }: {
   user: UserContext;
-  page: LocationType;
+  page: Page;
   action: Action;
 }) => {
   if (user.data.isAdmin) {
@@ -21,11 +21,11 @@ const checkPageAction = ({
   let roles = [];
 
   switch (page) {
-    case 'User': {
+    case Page.User: {
       roles = UserActionsMapping[action];
       break;
     }
-    case 'Company': {
+    case Page.Company: {
       roles = CompanyActionsMapping[action];
       break;
     }

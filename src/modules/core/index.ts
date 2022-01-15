@@ -1,4 +1,3 @@
-export { CurrentUser } from './decorators';
 export { GraphQLFilter } from './filters';
 export {
   AppHelper,

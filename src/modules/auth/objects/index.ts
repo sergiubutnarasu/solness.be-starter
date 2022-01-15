@@ -1,11 +1,10 @@
 export { RefreshToken } from './entities';
-export { AuthKeys } from './enums';
+export { AuthKeys, Page } from './enums';
 export { TokenPayload } from './models';
 export { TokenResponse } from './response';
 export {
   AccessType,
-  ActionType,
+  BaseActionType,
   CompanyActionType,
-  LocationType,
   UserActionType,
 } from './types';

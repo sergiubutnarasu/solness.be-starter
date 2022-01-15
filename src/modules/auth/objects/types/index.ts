@@ -1,7 +1,6 @@
 export type { AccessType } from './access.type';
 export type {
-  ActionType,
+  BaseActionType,
   CompanyActionType,
-  LocationType,
   UserActionType,
 } from './action.type';

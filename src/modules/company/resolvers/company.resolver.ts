@@ -2,6 +2,7 @@ import { NotFoundException, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { Access, CurrentUser } from '~/modules/auth/decorators';
 import { GraphQlAccessGuard, GraphQlAuthGuard } from '~/modules/auth/guards';
+import { Page } from '~/modules/auth/objects';
 import { composeResult, PageListInput, UserContext } from '~/modules/core';
 import {
   Company,
@@ -26,7 +27,7 @@ export class CompanyResolver {
    * @param user Current logged user
    * @returns Returns company response that contains a list of companies
    */
-  @Access({ page: 'Company', action: 'view' })
+  @Access({ page: Page.Company, action: 'view' })
   @Query(() => PaginatedCompanyResponse, { name: 'companies' })
   public async find(
     @CurrentUser() user: UserContext,
@@ -44,7 +45,7 @@ export class CompanyResolver {
    * @param id - Company identifier
    * @returns Company response
    */
-  @Access({ page: 'Company', action: 'view' })
+  @Access({ page: Page.Company, action: 'view' })
   @Query(() => Company, { name: 'company', nullable: true })
   public async get(
     @Args('id') id: number,
@@ -65,7 +66,7 @@ export class CompanyResolver {
    * @param model The company details
    * @returns Company response
    */
-  @Access({ page: 'Company', action: 'create' })
+  @Access({ page: Page.Company, action: 'create' })
   @Mutation(() => CompanyResponse, { name: 'createCompany' })
   public async create(
     @Args({ name: 'model', type: () => CompanyInput })
@@ -83,14 +84,15 @@ export class CompanyResolver {
    * @param model The company details
    * @returns Company response
    */
-  @Access({ page: 'Company', action: 'update' })
+  @Access({ page: Page.Company, action: 'update' })
   @Mutation(() => CompanyResponse, { name: 'updateCompany' })
   public async update(
     @Args({ name: 'model', type: () => CompanyInput })
     model: Company,
     @CurrentUser() user: UserContext,
   ): Promise<CompanyResponse> {
-    const result = await this.service.update(model.id, model, user);
+    const companyId = user.data.isAdmin ? model.id : user.data.companyId;
+    const result = await this.service.update(+companyId, model, user);
 
     return composeResult({ data: result });
   }
@@ -101,7 +103,7 @@ export class CompanyResolver {
    * @param id The company ID that will be deleted
    * @returns Company response
    */
-  @Access({ page: 'Company', action: 'delete' })
+  @Access({ page: Page.Company, action: 'delete' })
   @Mutation(() => CompanyResponse, { name: 'deleteCompany' })
   public async delete(
     @Args('id') id: number,

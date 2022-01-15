@@ -1,11 +1,11 @@
 import { UserContext } from '~/modules/core';
-import { ActionType, LocationType } from '../objects';
+import { BaseActionType, Page } from '../objects';
 import checkPageAction from './check-page-action.helper';
 
 const checkDefaultPageActions = (
   user: UserContext,
-  page: LocationType,
-): Record<ActionType, boolean> => ({
+  page: Page,
+): Record<BaseActionType, boolean> => ({
   view: checkPageAction({ user, page, action: 'view' }),
   create: checkPageAction({ user, page, action: 'create' }),
   update: checkPageAction({ user, page, action: 'update' }),

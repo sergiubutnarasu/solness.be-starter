@@ -6,4 +6,6 @@ export const CompanyActionsMapping: Record<CompanyActionType, CompanyRole[]> = {
   create: [],
   update: [CompanyRole.Owner],
   delete: [],
+  inviteUser: [CompanyRole.Owner],
+  excludeUser: [CompanyRole.Owner],
 };
