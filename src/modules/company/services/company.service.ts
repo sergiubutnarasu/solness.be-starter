@@ -17,10 +17,11 @@ export class CompanyService extends BaseService<Company> {
     return query
       .innerJoin(
         'companyUsers',
-        'COMPANIES',
-        'GENERIC.id = COMPANIES.companyId',
+        'COMPANY_USER',
+        'GENERIC.id = COMPANY_USER.companyId',
       )
-      .andWhere('COMPANIES.userId = :userId', {
+      .andWhere('COMPANY_USER.verified = 1')
+      .andWhere('COMPANY_USER.userId = :userId', {
         userId: user.id,
       });
   }

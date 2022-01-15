@@ -12,6 +12,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { AuthHelper } from './../helpers';
 import { AuthService } from './../services';
 
+/**
+ * @deprecated() Use auth resolver
+ */
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

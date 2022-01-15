@@ -7,4 +7,5 @@ export class CreateCompanyUserInput extends CompanyUser {}
 @InputType()
 export class CompanyUserInput extends OmitType(CreateCompanyUserInput, [
   'user',
+  'verified',
 ]) {}

@@ -25,6 +25,8 @@ export class UserRepository extends BaseRepository<User> {
           ON COMPANY_USERS.userId = USER.id
         WHERE
           USER.id = ?
+            AND USER.enabled = 1
+            AND USER.verified = 1
       `,
       [userId],
     );

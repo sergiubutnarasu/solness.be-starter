@@ -10,6 +10,7 @@ export class DefaultSetup1567498401541 implements MigrationInterface {
 
     await queryRunner.manager.insert<User>('user', {
       enabled: true,
+      verified: true,
       createdUserId: 0,
       createdDatetime: new Date(),
       email: AppHelper.getConfig(AppConfigKey.DefaultUsername),

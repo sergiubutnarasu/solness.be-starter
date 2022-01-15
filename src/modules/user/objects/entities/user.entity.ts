@@ -14,6 +14,10 @@ export class User extends BaseEntity {
   })
   email: string;
 
+  @Column({ default: false })
+  @Field()
+  verified: boolean;
+
   @Field()
   @Column({ length: 50 })
   firstName: string;

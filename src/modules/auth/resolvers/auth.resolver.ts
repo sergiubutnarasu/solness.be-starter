@@ -1,3 +1,4 @@
+import { UnauthorizedException } from '@nestjs/common';
 import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
 import { composeResult, SimpleResponse } from '~/modules/core';
 import { AuthHelper } from '../helpers';
@@ -48,10 +49,7 @@ export class AuthResolver {
     @Args('accessToken') accessToken: string,
   ): Promise<TokenResponse> {
     if (!accessToken || !refreshToken) {
-      return composeResult({
-        success: false,
-        messages: ['Missing parameters.'],
-      });
+      throw new UnauthorizedException();
     }
 
     const token = await this.authService.refresh(
@@ -60,10 +58,7 @@ export class AuthResolver {
     );
 
     if (!token) {
-      return composeResult({
-        success: false,
-        messages: ['Refresh failed.'],
-      });
+      throw new UnauthorizedException();
     }
 
     const payload = await AuthHelper.secureJwtToken(ctx.req, token);

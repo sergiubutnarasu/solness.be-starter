@@ -8,6 +8,10 @@ import { Company } from './company.entity';
 @ObjectType()
 @InputType({ isAbstract: true })
 export class CompanyUser extends BaseEntity {
+  @Column()
+  @Field()
+  verified: boolean;
+
   @Field()
   @Column({ nullable: false })
   userId: number;

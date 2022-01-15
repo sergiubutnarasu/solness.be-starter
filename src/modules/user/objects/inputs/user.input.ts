@@ -8,4 +8,7 @@ import { User } from '../entities';
 export class CreateUserInput extends User {}
 
 @InputType()
-export class UserInput extends OmitType(CreateUserInput, ['role'] as const) {}
+export class UserInput extends OmitType(CreateUserInput, [
+  'role',
+  'verified',
+] as const) {}

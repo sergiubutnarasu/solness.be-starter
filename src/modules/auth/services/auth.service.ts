@@ -26,6 +26,7 @@ export class AuthService {
       where: {
         email: username,
         enabled: true,
+        verified: true,
       },
       select: ['password', 'id', 'role'],
     });

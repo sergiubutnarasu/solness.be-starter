@@ -11,6 +11,7 @@ type User {
   id: Int
   enabled: Boolean!
   email: String!
+  verified: Boolean!
   firstName: String!
   lastName: String!
   role: String!
@@ -52,6 +53,7 @@ type Company {
 type CompanyUser {
   id: Int
   enabled: Boolean!
+  verified: Boolean!
   userId: Float!
   user: User!
   companyId: Float!
