@@ -118,7 +118,7 @@ type Query {
   user(id: Float!): User
   viewer: Viewer!
   companies(request: PageListInput): PaginatedCompanyResponse!
-  company(id: Float!): Company
+  company(id: Float): Company
 }
 
 type Mutation {

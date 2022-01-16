@@ -48,10 +48,20 @@ export class CompanyResolver {
   @Access({ page: Page.Company, action: 'view' })
   @Query(() => Company, { name: 'company', nullable: true })
   public async get(
-    @Args('id') id: number,
     @CurrentUser() user: UserContext,
+    @Args('id', { nullable: true }) id?: number,
   ): Promise<Company> {
-    const model = await this.service.get(id, user);
+    let companyId = +user.data.companyId;
+
+    if (user.data.isAdmin && id) {
+      companyId = id;
+    }
+
+    if (!companyId) {
+      throw new NotFoundException('Company ID is missing.');
+    }
+
+    const model = await this.service.get(companyId, user);
 
     if (!model) {
       throw new NotFoundException('Company not found.');
@@ -92,6 +102,7 @@ export class CompanyResolver {
     @CurrentUser() user: UserContext,
   ): Promise<CompanyResponse> {
     const companyId = user.data.isAdmin ? model.id : user.data.companyId;
+    model.id = +companyId;
     const result = await this.service.update(+companyId, model, user);
 
     return composeResult({ data: result });
