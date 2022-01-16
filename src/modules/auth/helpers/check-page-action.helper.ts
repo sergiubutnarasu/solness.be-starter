@@ -1,8 +1,23 @@
 import { CompanyRole, UserContext } from '~/modules/core';
-import { CompanyActionsMapping, UserActionsMapping } from '../configs';
-import { CompanyActionType, Page, UserActionType } from '../objects';
+import {
+  CashActionsMapping,
+  CompanyActionsMapping,
+  InventoryActionsMapping,
+  UserActionsMapping,
+} from '../configs';
+import {
+  CashActionType,
+  CompanyActionType,
+  InventoryActionType,
+  Page,
+  UserActionType,
+} from '../objects';
 
-type Action = UserActionType | CompanyActionType;
+type Action =
+  | UserActionType
+  | CompanyActionType
+  | CashActionType
+  | InventoryActionType;
 
 const checkPageAction = ({
   user,
@@ -27,6 +42,14 @@ const checkPageAction = ({
     }
     case Page.Company: {
       roles = CompanyActionsMapping[action];
+      break;
+    }
+    case Page.Cash: {
+      roles = CashActionsMapping[action];
+      break;
+    }
+    case Page.Inventory: {
+      roles = InventoryActionsMapping[action];
       break;
     }
   }

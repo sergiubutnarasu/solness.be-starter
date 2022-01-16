@@ -3,4 +3,6 @@ export type {
   BaseActionType,
   CompanyActionType,
   UserActionType,
+  CashActionType,
+  InventoryActionType,
 } from './action.type';

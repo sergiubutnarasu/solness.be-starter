@@ -7,4 +7,6 @@ export {
   BaseActionType,
   CompanyActionType,
   UserActionType,
+  CashActionType,
+  InventoryActionType,
 } from './types';

@@ -81,6 +81,20 @@ type PaginatedCompanyResponse {
   total: Int!
 }
 
+type CashAction implements BaseAction {
+  view: Boolean!
+  create: Boolean!
+  update: Boolean!
+  delete: Boolean!
+}
+
+interface BaseAction {
+  view: Boolean!
+  create: Boolean!
+  update: Boolean!
+  delete: Boolean!
+}
+
 type CompanyAction implements BaseAction {
   view: Boolean!
   create: Boolean!
@@ -90,7 +104,7 @@ type CompanyAction implements BaseAction {
   excludeUser: Boolean!
 }
 
-interface BaseAction {
+type InventoryAction implements BaseAction {
   view: Boolean!
   create: Boolean!
   update: Boolean!
@@ -107,6 +121,8 @@ type UserAction implements BaseAction {
 type Permission {
   user: UserAction!
   company: CompanyAction!
+  cash: CashAction!
+  inventory: InventoryAction!
 }
 
 type Viewer {

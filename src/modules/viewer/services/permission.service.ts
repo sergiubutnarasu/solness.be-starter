@@ -12,7 +12,14 @@ export class PermissionService {
   public compute(user: UserContext): Permission {
     const userActions = checkDefaultPageActions(user, Page.User);
     const companyActions = checkCompanyPageActions(user);
+    const cashActions = checkDefaultPageActions(user, Page.Cash);
+    const inventoryActions = checkDefaultPageActions(user, Page.Inventory);
 
-    return { user: userActions, company: companyActions };
+    return {
+      user: userActions,
+      company: companyActions,
+      cash: cashActions,
+      inventory: inventoryActions,
+    };
   }
 }
