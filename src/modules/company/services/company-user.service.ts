@@ -24,7 +24,7 @@ export class CompanyUserService extends BaseService<CompanyUser> {
       return query;
     }
 
-    return query.andWhere('GENERIC.id.companyId = :companyId', {
+    return query.andWhere('GENERIC.companyId = :companyId', {
       companyId: user.data.companyId,
     });
   }
