@@ -60,9 +60,9 @@ type CompanyUser {
   enabled: Boolean!
   verified: Boolean!
   userId: Float!
-  user: User!
   companyId: Float!
   roles: [String!]!
+  user: User!
 }
 
 type CompanyResponse {
@@ -133,6 +133,7 @@ type Query {
   users(request: PageListInput): PaginatedUserResponse!
   user(id: Float!): User
   viewer: Viewer!
+  companyUser(id: Float!): CompanyUser
   companies(request: PageListInput): PaginatedCompanyResponse!
   company(id: Float): Company
 }

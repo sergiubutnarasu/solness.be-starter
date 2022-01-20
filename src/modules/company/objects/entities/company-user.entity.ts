@@ -16,7 +16,6 @@ export class CompanyUser extends BaseEntity {
   @Column({ nullable: false })
   userId: number;
 
-  @Field(() => User)
   @ManyToOne(() => User, { eager: true })
   user?: User;
 

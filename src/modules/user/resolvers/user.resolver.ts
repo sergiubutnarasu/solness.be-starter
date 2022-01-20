@@ -54,7 +54,7 @@ export class UserResolver {
    * @param id - User identifier
    * @returns User response
    */
-  @Access({ page: Page.User, action: 'view' })
+  @Roles(Role.Admin)
   @Query(() => User, { name: 'user', nullable: true })
   public async get(
     @Args('id') id: number,
