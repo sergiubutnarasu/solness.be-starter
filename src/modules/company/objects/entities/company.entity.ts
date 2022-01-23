@@ -23,6 +23,7 @@ export class Company extends BaseEntity {
 
   @Field({ nullable: true })
   @Column({
+    length: 1000,
     nullable: true,
   })
   description: string;
