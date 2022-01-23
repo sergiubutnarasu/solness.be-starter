@@ -44,6 +44,7 @@ export class Company extends BaseEntity {
 
   @Field()
   @Column({
+    length: 150,
     unique: true,
     transformer: EncryptTransform,
   })
