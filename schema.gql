@@ -49,6 +49,7 @@ type Company {
   email: String!
   registerNumber: String!
   phone: String!
+  website: String
   users(request: PageListInput): PaginatedCompanyUserResponse
 }
 
@@ -175,6 +176,7 @@ input CompanyInput {
   email: String!
   registerNumber: String!
   phone: String!
+  website: String
   users: [CompanyUserInput!]
 }
 

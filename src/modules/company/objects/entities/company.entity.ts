@@ -18,13 +18,15 @@ export class Company extends BaseEntity {
   @Column({
     length: 250,
     nullable: true,
+    transformer: EncryptTransform,
   })
   slogan: string;
 
   @Field({ nullable: true })
   @Column({
-    length: 1000,
+    length: 1500,
     nullable: true,
+    transformer: EncryptTransform,
   })
   description: string;
 
@@ -50,6 +52,14 @@ export class Company extends BaseEntity {
     transformer: EncryptTransform,
   })
   phone: string;
+
+  @Field({ nullable: true })
+  @Column({
+    nullable: true,
+    length: 250,
+    transformer: EncryptTransform,
+  })
+  website: string;
 
   @OneToMany(() => CompanyUser, (companyUser) => companyUser.company)
   users?: CompanyUser[];
