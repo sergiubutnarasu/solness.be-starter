@@ -14,6 +14,19 @@ export class Company extends BaseEntity {
   })
   name: string;
 
+  @Field({ nullable: true })
+  @Column({
+    length: 250,
+    nullable: true,
+  })
+  slogan: string;
+
+  @Field({ nullable: true })
+  @Column({
+    nullable: true,
+  })
+  description: string;
+
   @Field()
   @Column({
     length: 150,

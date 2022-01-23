@@ -37,8 +37,8 @@ export class DefaultSetup1567498401541 implements MigrationInterface {
       createdDatetime: new Date(),
       name: 'Solness',
       email: AppHelper.getConfig(AppConfigKey.DefaultUsername),
-      phone: 'Phone number',
-      registerNumber: 'CUI',
+      phone: '+123456789',
+      registerNumber: 'RO123456',
     });
 
     await queryRunner.manager.insert<CompanyUser>('companyUser', {

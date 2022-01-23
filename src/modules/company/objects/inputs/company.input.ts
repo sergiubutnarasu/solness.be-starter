@@ -6,7 +6,10 @@ import { Company } from '../entities';
 export class CreateCompanyInput extends Company {}
 
 @InputType()
-export class CompanyInput extends OmitType(CreateCompanyInput, ['users']) {
+export class CompanyInput extends OmitType(CreateCompanyInput, [
+  'users',
+  'enabled',
+]) {
   @Field(() => [CompanyUserInput], { nullable: true })
   users?: CompanyUserInput[];
 }

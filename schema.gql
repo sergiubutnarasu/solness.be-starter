@@ -44,6 +44,8 @@ type Company {
   id: Int
   enabled: Boolean!
   name: String!
+  slogan: String
+  description: String
   email: String!
   registerNumber: String!
   phone: String!
@@ -167,8 +169,9 @@ input InviteUserInput {
 
 input CompanyInput {
   id: Int
-  enabled: Boolean!
   name: String!
+  slogan: String
+  description: String
   email: String!
   registerNumber: String!
   phone: String!
