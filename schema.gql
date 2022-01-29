@@ -158,8 +158,6 @@ type Mutation {
 
 input UserInput {
   id: Int
-  enabled: Boolean!
-  email: String!
   firstName: String!
   lastName: String!
   title: String

@@ -9,6 +9,8 @@ export class CreateUserInput extends User {}
 
 @InputType()
 export class UserInput extends OmitType(CreateUserInput, [
-  'role',
+  'email',
+  'enabled',
   'verified',
+  'role',
 ] as const) {}
