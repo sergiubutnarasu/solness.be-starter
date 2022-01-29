@@ -54,13 +54,13 @@ export class UserResolver {
    * @param id - User identifier
    * @returns User response
    */
-  @Roles(Role.Admin)
   @Query(() => User, { name: 'user', nullable: true })
   public async get(
-    @Args('id') id: number,
     @CurrentUser() user: UserContext,
+    @Args('id', { nullable: true }) id?: number,
   ): Promise<User> {
-    const model = await this.service.get(id, user);
+    const userId = user.data.isAdmin ? id ?? user.id : user.id;
+    const model = await this.service.get(userId, user);
 
     if (!model) {
       throw new NotFoundException('User not found.');
@@ -81,7 +81,7 @@ export class UserResolver {
     model: User,
     @CurrentUser() user: UserContext,
   ): Promise<UserResponse> {
-    const userId = user.data.isAdmin ? model.id : user.id;
+    const userId = user.data.isAdmin ? model.id ?? user.id : user.id;
     model.id = userId;
     const result = await this.service.update(userId, model, user);
 

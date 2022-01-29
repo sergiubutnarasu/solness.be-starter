@@ -46,8 +46,8 @@ export class UserRepository extends BaseRepository<User> {
         isAdmin,
         companyId: data.companyId,
         companyRoles: ((data.companyRoles as string) ?? '').split(','),
-        firstName: data.firstName,
-        lastName: data.lastName,
+        firstName: CryptoHelper.decryptValue(data.firstName),
+        lastName: CryptoHelper.decryptValue(data.lastName),
       },
     };
 

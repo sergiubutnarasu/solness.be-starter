@@ -14,6 +14,8 @@ type User {
   verified: Boolean!
   firstName: String!
   lastName: String!
+  title: String
+  description: String
   role: String!
 }
 
@@ -134,7 +136,7 @@ type Viewer {
 
 type Query {
   users(request: PageListInput): PaginatedUserResponse!
-  user(id: Float!): User
+  user(id: Float): User
   viewer: Viewer!
   companyUser(id: Float!): CompanyUser
   companies(request: PageListInput): PaginatedCompanyResponse!
@@ -160,6 +162,8 @@ input UserInput {
   email: String!
   firstName: String!
   lastName: String!
+  title: String
+  description: String
 }
 
 input InviteUserInput {

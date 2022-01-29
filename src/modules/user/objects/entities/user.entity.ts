@@ -19,12 +19,20 @@ export class User extends BaseEntity {
   verified: boolean;
 
   @Field()
-  @Column({ length: 50 })
+  @Column({ length: 150, transformer: EncryptTransform })
   firstName: string;
 
   @Field()
-  @Column({ length: 50 })
+  @Column({ length: 150, transformer: EncryptTransform })
   lastName: string;
+
+  @Field({ nullable: true })
+  @Column({ length: 250, nullable: true, transformer: EncryptTransform })
+  title?: string;
+
+  @Field({ nullable: true })
+  @Column({ length: 650, nullable: true, transformer: EncryptTransform })
+  description?: string;
 
   @Column({ length: 250, select: false })
   password: string;

@@ -24,8 +24,9 @@ export class DefaultSetup1567498401541 implements MigrationInterface {
       createdDatetime: new Date(),
       email: AppHelper.getConfig(AppConfigKey.DefaultUsername),
       password,
-      firstName: 'Admin',
-      lastName: 'User',
+      firstName: 'Sergiu',
+      lastName: 'Butnarasu',
+      title: 'Fullstack Developer',
       role: Role.Admin,
     });
 
