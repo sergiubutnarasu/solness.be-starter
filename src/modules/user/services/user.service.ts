@@ -60,14 +60,21 @@ export class UserService extends BaseService<User> {
   }
 
   public async changePassword(
-    userId: number,
+    oldPassword: string,
     newPassword: string,
+    user: UserContext,
   ): Promise<boolean> {
-    const user = await this.repo.findOne(userId);
+    const existingUser = await this.repo.findOne({
+      where: { id: user.id },
+      select: ['id', 'password'],
+    });
 
-    if (user) {
-      user.password = CryptoHelper.hash(newPassword);
-      this.repo.save(user);
+    if (
+      existingUser &&
+      CryptoHelper.compare(oldPassword, existingUser.password)
+    ) {
+      existingUser.password = CryptoHelper.hash(newPassword);
+      this.repo.save(existingUser);
       return true;
     }
 

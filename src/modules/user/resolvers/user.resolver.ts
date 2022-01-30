@@ -4,20 +4,21 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Access, CurrentUser, Roles } from '~/modules/auth/decorators';
+import { CurrentUser, Roles } from '~/modules/auth/decorators';
 import {
   GraphQlAccessGuard,
   GraphQlAuthGuard,
   GraphQlRolesGuard,
 } from '~/modules/auth/guards';
-import { Page } from '~/modules/auth/objects';
 import {
   composeResult,
   PageListInput,
   Role,
+  SimpleResponse,
   UserContext,
 } from '~/modules/core';
 import {
+  ChangePasswordInput,
   PaginatedUserResponse,
   User,
   UserInput,
@@ -107,5 +108,20 @@ export class UserResolver {
     const result = await this.service.delete(userId, user);
 
     return composeResult({ data: result });
+  }
+
+  @Mutation(() => SimpleResponse, { name: 'changePassword' })
+  public async changePassword(
+    @Args({ name: 'model', type: () => ChangePasswordInput })
+    model: ChangePasswordInput,
+    @CurrentUser() user: UserContext,
+  ) {
+    const result = await this.service.changePassword(
+      model.oldPassword,
+      model.newPassword,
+      user,
+    );
+
+    return composeResult({ success: result });
   }
 }

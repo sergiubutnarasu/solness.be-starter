@@ -149,6 +149,7 @@ type Mutation {
   refresh(accessToken: String!, refreshToken: String!): TokenResponse!
   updateUser(model: UserInput!): UserResponse!
   deleteUser(id: Float): UserResponse!
+  changePassword(model: ChangePasswordInput!): SimpleResponse!
   inviteUser(model: InviteUserInput!): SimpleResponse!
   excludeUser(userId: Float!): SimpleResponse!
   createCompany(model: CompanyInput!): CompanyResponse!
@@ -162,6 +163,11 @@ input UserInput {
   lastName: String!
   title: String
   description: String
+}
+
+input ChangePasswordInput {
+  oldPassword: String!
+  newPassword: String!
 }
 
 input InviteUserInput {

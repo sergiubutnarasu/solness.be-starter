@@ -112,8 +112,9 @@ export class AuthService {
       );
 
       return (
-        tokenDetails.userId != null &&
-        this.userService.changePassword(tokenDetails.userId, newPassword)
+        tokenDetails.userId != null && false
+        // TODO - reset password
+        // this.userService.changePassword(tokenDetails.userId, newPassword)
       );
     } catch {
       return false;
