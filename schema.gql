@@ -147,6 +147,9 @@ type Mutation {
   login(password: String!, username: String!): TokenResponse!
   logout(refreshToken: String!): SimpleResponse!
   refresh(accessToken: String!, refreshToken: String!): TokenResponse!
+  sendResetPasswordEmail(email: String!): SimpleResponse!
+  checkResetPasswordToken(token: String!): SimpleResponse!
+  resetPassword(newPassword: String!, token: String!): SimpleResponse!
   updateUser(model: UserInput!): UserResponse!
   deleteUser(id: Float): UserResponse!
   changePassword(model: ChangePasswordInput!): SimpleResponse!

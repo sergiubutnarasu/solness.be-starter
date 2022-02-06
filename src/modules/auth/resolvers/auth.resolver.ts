@@ -1,4 +1,4 @@
-import { UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, UnauthorizedException } from '@nestjs/common';
 import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
 import { composeResult, SimpleResponse } from '~/modules/core';
 import { AuthHelper } from '../helpers';
@@ -64,5 +64,36 @@ export class AuthResolver {
     const payload = await AuthHelper.secureJwtToken(ctx.req, token);
 
     return composeResult({ data: payload });
+  }
+
+  @Mutation(() => SimpleResponse, { name: 'sendResetPasswordEmail' })
+  public async sendResetPasswordEmail(@Args('email') email: string) {
+    const result = await this.authService.sendResetPasswordEmail(email);
+
+    return composeResult({ success: result });
+  }
+
+  @Mutation(() => SimpleResponse, { name: 'checkResetPasswordToken' })
+  async checkResetPasswordToken(@Args('token') token: string) {
+    const result = await this.authService.checkTokenAvailability(token);
+
+    return composeResult({ success: result });
+  }
+
+  @Mutation(() => SimpleResponse, { name: 'resetPassword' })
+  public async resetPassword(
+    @Args('token') token: string,
+    @Args('newPassword') newPassword: string,
+  ) {
+    const result = await this.authService.verifyAndChangePassword(
+      token,
+      newPassword,
+    );
+
+    if (result) {
+      return composeResult();
+    }
+
+    throw new ForbiddenException();
   }
 }

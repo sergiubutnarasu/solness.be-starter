@@ -61,13 +61,18 @@ export class AuthService {
     };
   }
 
-  public async generateResetPasswordToken(email: string) {
+  public async sendResetPasswordEmail(email: string) {
     const user = await this.userService.getUserByEmail(email);
-    if (user) {
-      const payload = { userId: user.id };
-      const token = this.jwtService.sign(payload, { expiresIn: '24h' });
-      await this.emailService.sendResetPasswordEmail(user.email, token);
+
+    if (!user) {
+      return false;
     }
+
+    const payload = { userId: user.id };
+    const token = this.jwtService.sign(payload, { expiresIn: '24h' });
+    await this.emailService.sendResetPasswordEmail(user.email, token);
+
+    return true;
   }
 
   public async checkTokenAvailability(token: string) {
@@ -107,15 +112,13 @@ export class AuthService {
 
   async verifyAndChangePassword(token: string, newPassword: string) {
     try {
-      const tokenDetails: { userId: number } = await this.jwtService.verify(
+      const { userId }: { userId: number } = await this.jwtService.verify(
         token,
       );
 
-      return (
-        tokenDetails.userId != null && false
-        // TODO - reset password
-        // this.userService.changePassword(tokenDetails.userId, newPassword)
-      );
+      if (userId) {
+        return await this.userService.resetPassword(userId, newPassword);
+      }
     } catch {
       return false;
     }

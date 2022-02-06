@@ -19,7 +19,9 @@ export class EmailService {
       subject: 'Reset Password',
       to: email,
       from: undefined,
-      text: `${AppHelper.getConfig(AppConfigKey.DefaultLink)}/${token}`,
+      text: `${AppHelper.getConfig(
+        AppConfigKey.DefaultLink,
+      )}/recovery/${token}`,
     };
 
     await this.sendEmail(mail);

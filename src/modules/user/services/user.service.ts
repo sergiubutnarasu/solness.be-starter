@@ -81,6 +81,22 @@ export class UserService extends BaseService<User> {
     return false;
   }
 
+  public async resetPassword(userId: number, newPassword: string) {
+    const existingUser = await this.repo.findOne({
+      where: { id: userId },
+      select: ['id'],
+    });
+
+    if (existingUser) {
+      existingUser.password = CryptoHelper.hash(newPassword);
+      await this.repo.save(existingUser);
+
+      return true;
+    }
+
+    return false;
+  }
+
   public async getUserByEmail(email: string): Promise<User | undefined> {
     return await this.findOne({
       email: email,

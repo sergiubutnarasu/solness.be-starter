@@ -29,7 +29,7 @@ export class AuthController {
 
   @Post('reset-password')
   async resetPassword(@Body('email') email: string) {
-    await this.authService.generateResetPasswordToken(email);
+    await this.authService.sendResetPasswordEmail(email);
     return true;
   }
 
