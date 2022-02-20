@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './modules/auth';
+import { CashRegisterModule } from './modules/cash-register';
 import { CompanyModule } from './modules/company';
 import {
   AppConfigKey,
@@ -14,7 +15,13 @@ import {
 import { UserModule } from './modules/user';
 import { ViewerModule } from './modules/viewer';
 
-const appModules = [AuthModule, ViewerModule, UserModule, CompanyModule];
+const appModules = [
+  AuthModule,
+  ViewerModule,
+  UserModule,
+  CompanyModule,
+  CashRegisterModule,
+];
 
 @Module({
   imports: [
@@ -36,7 +43,9 @@ const appModules = [AuthModule, ViewerModule, UserModule, CompanyModule];
     }),
     GraphQLModule.forRoot({
       debug: AppHelper.checkEnvironment(Environment.Development),
-      playground: AppHelper.checkEnvironment(Environment.Development),
+      playground: AppHelper.checkEnvironment(Environment.Development)
+        ? { settings: { 'request.credentials': 'include' } }
+        : false,
       autoSchemaFile: 'schema.gql',
       context: ({ req }) => ({ req }),
       cors: {

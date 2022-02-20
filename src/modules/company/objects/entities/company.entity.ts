@@ -1,5 +1,7 @@
-import { Field, InputType, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, OneToMany } from 'typeorm';
+import { graphQlFieldAccess } from '~/modules/auth/guards';
+import { Page } from '~/modules/auth/objects';
 import { BaseEntity, EncryptTransform } from '~/modules/core';
 import { CompanyUser } from './company-user.entity';
 
@@ -60,6 +62,24 @@ export class Company extends BaseEntity {
     transformer: EncryptTransform,
   })
   website: string;
+
+  @Field({
+    nullable: true,
+    middleware: [graphQlFieldAccess({ page: Page.Cash, action: 'view' })],
+  })
+  @Column({
+    nullable: true,
+    transformer: EncryptTransform,
+    length: 150,
+  })
+  initialCashValue: string;
+
+  @Field(() => Int, {
+    nullable: true,
+    middleware: [graphQlFieldAccess({ page: Page.Cash, action: 'view' })],
+  })
+  @Column({ nullable: true })
+  initialIndex?: number;
 
   @OneToMany(() => CompanyUser, (companyUser) => companyUser.company)
   users?: CompanyUser[];

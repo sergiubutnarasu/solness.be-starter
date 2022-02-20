@@ -9,6 +9,7 @@ export class CreateCompanyInput extends Company {}
 export class CompanyInput extends OmitType(CreateCompanyInput, [
   'users',
   'enabled',
+  'initialCashValue',
 ]) {
   @Field(() => [CompanyUserInput], { nullable: true })
   users?: CompanyUserInput[];

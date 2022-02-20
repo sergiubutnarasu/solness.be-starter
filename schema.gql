@@ -52,6 +52,8 @@ type Company {
   registerNumber: String!
   phone: String!
   website: String
+  initialCashValue: String
+  initialIndex: Int
   users(request: PageListInput): PaginatedCompanyUserResponse
 }
 
@@ -188,6 +190,7 @@ input CompanyInput {
   registerNumber: String!
   phone: String!
   website: String
+  initialIndex: Int
   users: [CompanyUserInput!]
 }
 

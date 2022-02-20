@@ -12,8 +12,6 @@ export class CompanyUserRepository extends BaseRepository<CompanyUser> {
         { userId, companyId: +user.data.companyId },
       )
       .getOne();
-
-    // return await this.findOne({ userId, companyId: +user.data.companyId });
   }
 
   public async excludeUser(userId: number, user: UserContext) {

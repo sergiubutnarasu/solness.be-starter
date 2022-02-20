@@ -53,6 +53,10 @@ class CryptoHelperClass {
   }
 
   public encryptValue(value: string) {
+    if (!value) {
+      return null;
+    }
+
     return this.encrypt(
       AppHelper.getConfig(AppConfigKey.DefaultEncryptionKey),
       `${value}`,
@@ -60,9 +64,13 @@ class CryptoHelperClass {
   }
 
   public decryptValue(value: string) {
+    if (!value) {
+      return null;
+    }
+
     return this.decrypt(
       AppHelper.getConfig(AppConfigKey.DefaultEncryptionKey),
-      value,
+      String(value),
     );
   }
 

@@ -1,0 +1,1 @@
+export { CashRegisterEntry } from './entities';
