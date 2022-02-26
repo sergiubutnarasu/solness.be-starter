@@ -1,4 +1,4 @@
-import { SelectQueryBuilder } from 'typeorm';
+import { DeepPartial, SelectQueryBuilder } from 'typeorm';
 import { PaginatedResponse } from '..';
 import { PaginationHelper } from '../helpers';
 import { BaseEntity } from '../objects/entities';
@@ -7,14 +7,17 @@ import { UserContext } from '../objects/types';
 import { BaseCrudService } from './base-crud.service';
 
 export abstract class BaseService<
-  TEntity extends BaseEntity
+  TEntity extends BaseEntity,
 > extends BaseCrudService<TEntity> {
   protected abstract addAccessCondition(
     query: SelectQueryBuilder<TEntity>,
     user: UserContext,
   ): SelectQueryBuilder<TEntity>;
 
-  public async create(model: TEntity, user: UserContext): Promise<TEntity> {
+  public async create(
+    model: DeepPartial<TEntity>,
+    user: UserContext,
+  ): Promise<TEntity> {
     model.enabled = true;
     return await this.saveEntity(model, user.id);
   }
@@ -67,7 +70,10 @@ export abstract class BaseService<
     return await conditionQuery.getOne();
   }
 
-  public async save(model: TEntity, user: UserContext): Promise<TEntity> {
+  public async save(
+    model: DeepPartial<TEntity>,
+    user: UserContext,
+  ): Promise<TEntity> {
     const result = !!model.id
       ? await this.update(model.id, model, user)
       : await this.create(model, user);
@@ -76,7 +82,7 @@ export abstract class BaseService<
 
   public async update(
     id: number,
-    model: TEntity,
+    model: DeepPartial<TEntity>,
     user: UserContext,
   ): Promise<TEntity> {
     const existsModel = await this.get(id, user);

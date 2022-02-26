@@ -1,3 +1,4 @@
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -41,7 +42,8 @@ const appModules = [
       subscribers: [CommonSubscriber],
       logging: AppHelper.checkEnvironment(Environment.Development),
     }),
-    GraphQLModule.forRoot({
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
       debug: AppHelper.checkEnvironment(Environment.Development),
       playground: AppHelper.checkEnvironment(Environment.Development)
         ? { settings: { 'request.credentials': 'include' } }

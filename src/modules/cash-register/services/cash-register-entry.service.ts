@@ -32,8 +32,6 @@ export class CashRegisterEntryService extends BaseService<CashRegisterEntry> {
       .orderBy('date')
       .getMany();
 
-    console.log('grouped', result);
-
     return result?.map(({ date }) => DateHelper.getDate(date));
   }
 
