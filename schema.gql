@@ -42,6 +42,22 @@ type TokenResponse {
   messages: [String!]
 }
 
+type CashRegisterEntry {
+  id: Int
+  enabled: Boolean!
+  companyId: Float!
+  date: DateTime!
+  docNumber: String!
+  annexNumber: String
+  description: String!
+  value: Int!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Company {
   id: Int
   enabled: Boolean!
@@ -143,6 +159,8 @@ type Query {
   companyUser(id: Float!): CompanyUser
   companies(request: PageListInput): PaginatedCompanyResponse!
   company(id: Float): Company
+  cashRegisters: [String!]!
+  cashRegisterEntries(date: DateTime!): [CashRegisterEntry!]!
 }
 
 type Mutation {
@@ -160,6 +178,9 @@ type Mutation {
   createCompany(model: CompanyInput!): CompanyResponse!
   updateCompany(model: CompanyInput!): CompanyResponse!
   deleteCompany(id: Float!): CompanyResponse!
+  saveCashRegister(entities: [CashRegisterEntryInput!]!): SimpleResponse!
+  deleteCashRegister(date: DateTime!): SimpleResponse!
+  deleteCashRegisterEntries(ids: [Int!]!): SimpleResponse!
 }
 
 input UserInput {
@@ -190,14 +211,14 @@ input CompanyInput {
   registerNumber: String!
   phone: String!
   website: String
-  initialIndex: Int
-  users: [CompanyUserInput!]
 }
 
-input CompanyUserInput {
+input CashRegisterEntryInput {
   id: Int
-  enabled: Boolean!
-  userId: Float!
-  companyId: Float!
-  roles: [String!]!
+  companyId: Float
+  date: DateTime!
+  docNumber: String!
+  annexNumber: String
+  description: String!
+  value: Int!
 }

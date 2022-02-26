@@ -11,4 +11,8 @@ export abstract class BaseCrudService<T> extends TypeOrmCrudService<T> {
   protected async saveEntity(model: T, userId: number): Promise<T> {
     return await this.repo.save(model, { data: { userId } });
   }
+
+  protected async saveEntities(entities: T[], userId: number): Promise<T[]> {
+    return await this.repo.save(entities, { data: { userId } });
+  }
 }

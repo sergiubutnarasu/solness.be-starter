@@ -1,5 +1,4 @@
-import { Field, InputType, OmitType } from '@nestjs/graphql';
-import { CompanyUserInput } from '.';
+import { InputType, OmitType } from '@nestjs/graphql';
 import { Company } from '../entities';
 
 @InputType({ isAbstract: true })
@@ -10,7 +9,8 @@ export class CompanyInput extends OmitType(CreateCompanyInput, [
   'users',
   'enabled',
   'initialCashValue',
+  'initialIndex',
 ]) {
-  @Field(() => [CompanyUserInput], { nullable: true })
-  users?: CompanyUserInput[];
+  // @Field(() => [CompanyUserInput], { nullable: true })
+  // users?: CompanyUserInput[];
 }

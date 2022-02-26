@@ -1,4 +1,4 @@
-import { Field, InputType, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { BaseEntity, EncryptTransform } from '~/modules/core';
 
@@ -29,7 +29,7 @@ export class CashRegisterEntry extends BaseEntity {
   @Column({ length: 250 })
   description: string;
 
-  @Field()
+  @Field(() => Int)
   @Column({
     length: 150,
     nullable: true,
