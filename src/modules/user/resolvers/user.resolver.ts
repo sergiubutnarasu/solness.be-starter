@@ -56,12 +56,8 @@ export class UserResolver {
    * @returns User response
    */
   @Query(() => User, { name: 'user', nullable: true })
-  public async get(
-    @CurrentUser() user: UserContext,
-    @Args('id', { nullable: true }) id?: number,
-  ): Promise<User> {
-    const userId = user.data.isAdmin ? id ?? user.id : user.id;
-    const model = await this.service.get(userId, user);
+  public async get(@CurrentUser() user: UserContext): Promise<User> {
+    const model = await this.service.get(user.id, user);
 
     if (!model) {
       throw new NotFoundException('User not found.');
@@ -82,7 +78,7 @@ export class UserResolver {
     model: User,
     @CurrentUser() user: UserContext,
   ): Promise<UserResponse> {
-    const userId = user.data.isAdmin ? model.id ?? user.id : user.id;
+    const userId = user.id;
     model.id = userId;
     const result = await this.service.update(userId, model, user);
 
@@ -98,7 +94,7 @@ export class UserResolver {
   @Mutation(() => UserResponse, { name: 'deleteUser' })
   public async delete(
     @CurrentUser() user: UserContext,
-    @Args('id', { nullable: true }) id: number,
+    @Args('id', { nullable: true }) id?: number,
   ): Promise<UserResponse> {
     if (user.data.isAdmin && id === user.id) {
       throw new BadRequestException('Cannot delete the current admin user.');

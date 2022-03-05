@@ -4,7 +4,11 @@ import { Access, CurrentUser } from '~/modules/auth/decorators';
 import { GraphQlAccessGuard, GraphQlAuthGuard } from '~/modules/auth/guards';
 import { Page } from '~/modules/auth/objects';
 import { composeResult, SimpleResponse, UserContext } from '~/modules/core';
-import { CashRegisterEntry, CashRegisterEntryInput } from '../objects';
+import {
+  CashRegisterEntry,
+  CashRegisterEntryDetails,
+  CashRegisterEntryInput,
+} from '../objects';
 import { CashRegisterEntryService } from '../services';
 
 @UseGuards(GraphQlAuthGuard, GraphQlAccessGuard)
@@ -21,11 +25,11 @@ export class CashRegisterEntryResolver {
   }
 
   @Access({ page: Page.Cash, action: 'view' })
-  @Query(() => [CashRegisterEntry], { name: 'cashRegisterEntries' })
+  @Query(() => CashRegisterEntryDetails, { name: 'cashRegisterEntries' })
   public async getByDate(
     @CurrentUser() user: UserContext,
     @Args('date') date: Date,
-  ) {
+  ): Promise<CashRegisterEntryDetails> {
     const result = await this.service.getByDate(date, user);
 
     return result;

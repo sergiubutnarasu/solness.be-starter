@@ -1,4 +1,4 @@
-import { EntityRepository } from 'typeorm';
+import { EntityRepository, SelectQueryBuilder } from 'typeorm';
 import {
   BaseRepository,
   CryptoHelper,
@@ -9,6 +9,21 @@ import { User } from '../objects';
 
 @EntityRepository(User)
 export class UserRepository extends BaseRepository<User> {
+  protected addAccessCondition(
+    query: SelectQueryBuilder<User>,
+    user: UserContext,
+  ): SelectQueryBuilder<User> {
+    return query
+      .innerJoin(
+        'companyUser',
+        'COMPANY_USER',
+        'GENERIC.id = COMPANY_USER.userId',
+      )
+      .andWhere('COMPANY_USER.companyId = :companyId', {
+        companyId: user.data.companyId,
+      });
+  }
+
   public async getUserAuthPayload(userId: number): Promise<UserContext> {
     const result = await this.query(
       `

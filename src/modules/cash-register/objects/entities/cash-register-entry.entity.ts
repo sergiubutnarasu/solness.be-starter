@@ -26,14 +26,15 @@ export class CashRegisterEntry extends BaseEntity {
   annexNumber: string;
 
   @Field()
-  @Column({ length: 250 })
-  description: string;
-
-  @Field(() => Int)
   @Column({
-    length: 150,
-    nullable: true,
+    length: 250,
     transformer: EncryptTransform,
   })
-  value: string;
+  description: string;
+
+  @Field()
+  @Column({
+    default: 0,
+  })
+  value: number;
 }

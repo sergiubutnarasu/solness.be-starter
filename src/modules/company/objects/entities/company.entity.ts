@@ -79,7 +79,7 @@ export class Company extends BaseEntity {
     middleware: [graphQlFieldAccess({ page: Page.Cash, action: 'view' })],
   })
   @Column({ nullable: true })
-  initialIndex?: number;
+  initialCashIndex?: number;
 
   @OneToMany(() => CompanyUser, (companyUser) => companyUser.company)
   users?: CompanyUser[];

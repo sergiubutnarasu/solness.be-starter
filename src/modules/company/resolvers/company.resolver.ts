@@ -47,15 +47,8 @@ export class CompanyResolver {
    */
   @Access({ page: Page.Company, action: 'view' })
   @Query(() => Company, { name: 'company', nullable: true })
-  public async get(
-    @CurrentUser() user: UserContext,
-    @Args('id', { nullable: true }) id?: number,
-  ): Promise<Company> {
+  public async get(@CurrentUser() user: UserContext): Promise<Company> {
     let companyId = +user.data.companyId;
-
-    if (user.data.isAdmin && id) {
-      companyId = id;
-    }
 
     if (!companyId) {
       throw new NotFoundException('Company ID is missing.');
@@ -101,8 +94,13 @@ export class CompanyResolver {
     model: Company,
     @CurrentUser() user: UserContext,
   ): Promise<CompanyResponse> {
-    const companyId = user.data.isAdmin ? model.id : user.data.companyId;
-    model.id = +companyId;
+    const companyId = +user.data.companyId;
+
+    if (!companyId) {
+      throw new NotFoundException('Company ID is missing.');
+    }
+
+    model.id = companyId;
     const result = await this.service.update(+companyId, model, user);
 
     return composeResult({ data: result });

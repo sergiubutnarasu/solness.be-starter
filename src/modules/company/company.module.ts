@@ -16,5 +16,6 @@ import { CompanyService, CompanyUserService } from './services';
     CompanyUserResolver,
     CompanyResolver,
   ],
+  exports: [CompanyService],
 })
 export class CompanyModule {}

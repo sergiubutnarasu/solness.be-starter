@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { SelectQueryBuilder } from 'typeorm';
+import { CompanyService } from '~/modules/company/services';
 import { BaseService, DateHelper, Role, UserContext } from '~/modules/core';
-import { CashRegisterEntry } from '../objects';
+import { CashRegisterEntry, CashRegisterEntryDetails } from '../objects';
 import { CashRegisterEntryRepository } from '../repositories';
 
 @Injectable()
@@ -10,40 +11,38 @@ export class CashRegisterEntryService extends BaseService<CashRegisterEntry> {
     query: SelectQueryBuilder<CashRegisterEntry>,
     user: UserContext,
   ): SelectQueryBuilder<CashRegisterEntry> {
-    if (user.role === Role.Admin) {
-      return query;
-    }
-
     return query.andWhere('GENERIC.companyId = :companyId', {
       companyId: user.data.companyId,
     });
   }
 
-  constructor(protected readonly repo: CashRegisterEntryRepository) {
+  constructor(
+    protected readonly repo: CashRegisterEntryRepository,
+    private readonly companyService: CompanyService,
+  ) {
     super(repo);
   }
 
   public async getGrouped(user: UserContext) {
-    const genericQuery = this.repo.createQueryBuilder('GENERIC');
-    const conditionQuery = this.addAccessCondition(genericQuery, user);
-    const result = await conditionQuery
-      .select('GENERIC.date')
-      .groupBy('date')
-      .orderBy('date')
-      .getMany();
+    const result = await this.repo.getGrouped(user);
 
-    return result?.map(({ date }) => DateHelper.getDate(date));
+    return result;
   }
 
-  public async getByDate(date: Date, user: UserContext) {
-    const dateParameter = DateHelper.getDate(date);
+  public async getByDate(
+    date: Date,
+    user: UserContext,
+  ): Promise<CashRegisterEntryDetails> {
+    const entries = await this.repo.getByDate(date, user);
+    const companyCashDetails = await this.companyService.getCashDetails(user);
+    const previousData = await this.repo.getPreviousEntriesData(date, user);
 
-    const query = this.repo
-      .createQueryBuilder('GENERIC')
-      .where('DATE(GENERIC.date) = :date', { date: dateParameter });
-    const conditionQuery = this.addAccessCondition(query, user);
-
-    return await conditionQuery.getMany();
+    return {
+      entries: entries ?? [],
+      companyCashDetails,
+      previousTotalValue: previousData.previousTotalValue,
+      previousEntriesCount: previousData.previousEntriesCount,
+    };
   }
 
   public async saveEntries(entries: CashRegisterEntry[], user: UserContext) {
@@ -64,32 +63,14 @@ export class CashRegisterEntryService extends BaseService<CashRegisterEntry> {
   }
 
   public async deleteByDate(date: Date, user: UserContext) {
-    const dateParameter = DateHelper.getDate(date);
+    const result = await this.repo.deleteByDate(date, user);
 
-    const query = this.repo
-      .createQueryBuilder()
-      .delete()
-      .where('DATE(date) = :date', { date: dateParameter })
-      .andWhere('companyId = :companyId', {
-        companyId: user.data.companyId,
-      });
-
-    return await query.execute();
+    return result;
   }
 
   public async deleteByIds(ids: number[], user: UserContext) {
-    if (!ids) {
-      return;
-    }
+    const result = await this.repo.deleteByIds(ids, user);
 
-    const query = this.repo
-      .createQueryBuilder()
-      .delete()
-      .whereInIds(ids)
-      .andWhere('companyId = :companyId', {
-        companyId: user.data.companyId,
-      });
-
-    return await query.execute();
+    return result;
   }
 }

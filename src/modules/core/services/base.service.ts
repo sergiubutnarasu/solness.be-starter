@@ -9,11 +9,6 @@ import { BaseCrudService } from './base-crud.service';
 export abstract class BaseService<
   TEntity extends BaseEntity,
 > extends BaseCrudService<TEntity> {
-  protected abstract addAccessCondition(
-    query: SelectQueryBuilder<TEntity>,
-    user: UserContext,
-  ): SelectQueryBuilder<TEntity>;
-
   public async create(
     model: DeepPartial<TEntity>,
     user: UserContext,
@@ -23,14 +18,13 @@ export abstract class BaseService<
   }
 
   public async all(user: UserContext): Promise<TEntity[]> {
-    const query = this.repo.createQueryBuilder('GENERIC');
-    const conditionQuery = this.addAccessCondition(query, user);
+    const result = await this.repo.all(user);
 
-    return await conditionQuery.getMany();
+    return result;
   }
 
   public async delete(id: number, user: UserContext): Promise<TEntity> {
-    const entity = await this.get(id, user);
+    const entity = await this.repo.get(id, user);
 
     if (entity) {
       return await this.repo.remove(entity);
@@ -43,31 +37,15 @@ export abstract class BaseService<
     request: TRequest,
     user: UserContext,
   ): Promise<PaginatedResponse<TEntity>> {
-    const skip = PaginationHelper.calculateOffset(
-      request.page,
-      request.pageSize,
-    );
+    const result = await this.repo.findAndCountQueryBuilder(request, user);
 
-    const query = this.repo
-      .createQueryBuilder('GENERIC')
-      .skip(skip)
-      .take(request.pageSize)
-      .where('GENERIC.enabled = 1');
-
-    const conditionQuery = this.addAccessCondition(query, user);
-    const [results, count] = await conditionQuery.getManyAndCount();
-
-    return { data: results, total: count };
+    return result;
   }
 
   public async get(id: number, user: UserContext): Promise<TEntity> {
-    const query = this.repo
-      .createQueryBuilder('GENERIC')
-      .where('GENERIC.id = :id', { id });
+    const result = await this.repo.get(id, user);
 
-    const conditionQuery = this.addAccessCondition(query, user);
-
-    return await conditionQuery.getOne();
+    return result;
   }
 
   public async save(

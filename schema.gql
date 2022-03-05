@@ -42,22 +42,6 @@ type TokenResponse {
   messages: [String!]
 }
 
-type CashRegisterEntry {
-  id: Int
-  enabled: Boolean!
-  companyId: Float!
-  date: DateTime!
-  docNumber: String!
-  annexNumber: String
-  description: String!
-  value: Int!
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 type Company {
   id: Int
   enabled: Boolean!
@@ -69,7 +53,7 @@ type Company {
   phone: String!
   website: String
   initialCashValue: String
-  initialIndex: Int
+  initialCashIndex: Int
   users(request: PageListInput): PaginatedCompanyUserResponse
 }
 
@@ -88,6 +72,11 @@ type CompanyUser {
   user: User!
 }
 
+type CompanyCashDetails {
+  initialCashIndex: Float
+  initialCashValue: Float
+}
+
 type CompanyResponse {
   data: Company
   success: Boolean!
@@ -102,6 +91,29 @@ type PaginatedCompanyUserResponse {
 type PaginatedCompanyResponse {
   data: [Company!]
   total: Int!
+}
+
+type CashRegisterEntry {
+  id: Int
+  enabled: Boolean!
+  companyId: Float!
+  date: DateTime!
+  docNumber: String!
+  annexNumber: String
+  description: String!
+  value: Float!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type CashRegisterEntryDetails {
+  companyCashDetails: CompanyCashDetails!
+  previousTotalValue: Float!
+  previousEntriesCount: Float!
+  entries: [CashRegisterEntry!]!
 }
 
 type CashAction implements BaseAction {
@@ -154,13 +166,13 @@ type Viewer {
 
 type Query {
   users(request: PageListInput): PaginatedUserResponse!
-  user(id: Float): User
+  user: User
   viewer: Viewer!
   companyUser(id: Float!): CompanyUser
   companies(request: PageListInput): PaginatedCompanyResponse!
-  company(id: Float): Company
+  company: Company
   cashRegisters: [String!]!
-  cashRegisterEntries(date: DateTime!): [CashRegisterEntry!]!
+  cashRegisterEntries(date: DateTime!): CashRegisterEntryDetails!
 }
 
 type Mutation {
@@ -220,5 +232,5 @@ input CashRegisterEntryInput {
   docNumber: String!
   annexNumber: String
   description: String!
-  value: Int!
+  value: Float!
 }

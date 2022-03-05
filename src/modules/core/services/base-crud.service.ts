@@ -1,24 +1,28 @@
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
-import { DeepPartial, Repository } from 'typeorm';
+import { DeepPartial } from 'typeorm';
+import { BaseEntity } from '../objects';
+import { BaseRepository } from '../repositories';
 
-export abstract class BaseCrudService<T> extends TypeOrmCrudService<T> {
-  protected repo: Repository<T>;
-  constructor(repository: Repository<T>) {
+export abstract class BaseCrudService<
+  TEntity extends BaseEntity,
+> extends TypeOrmCrudService<TEntity> {
+  protected repo: BaseRepository<TEntity>;
+  constructor(repository: BaseRepository<TEntity>) {
     super(repository);
     this.repo = repository;
   }
 
   protected async saveEntity(
-    model: DeepPartial<T>,
+    model: DeepPartial<TEntity>,
     userId: number,
-  ): Promise<T> {
+  ): Promise<TEntity> {
     return await this.repo.save(model, { data: { userId } });
   }
 
   protected async saveEntities(
-    entities: DeepPartial<T>[],
+    entities: DeepPartial<TEntity>[],
     userId: number,
-  ): Promise<T[]> {
+  ): Promise<TEntity[]> {
     return await this.repo.save(entities, { data: { userId } });
   }
 }

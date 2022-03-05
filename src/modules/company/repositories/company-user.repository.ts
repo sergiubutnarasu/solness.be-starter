@@ -1,9 +1,18 @@
-import { EntityRepository } from 'typeorm';
-import { BaseRepository, UserContext } from '~/modules/core';
+import { EntityRepository, SelectQueryBuilder } from 'typeorm';
+import { BaseRepository, Role, UserContext } from '~/modules/core';
 import { CompanyUser } from '../objects';
 
 @EntityRepository(CompanyUser)
 export class CompanyUserRepository extends BaseRepository<CompanyUser> {
+  protected addAccessCondition(
+    query: SelectQueryBuilder<CompanyUser>,
+    user: UserContext,
+  ): SelectQueryBuilder<CompanyUser> {
+    return query.andWhere('GENERIC.companyId = :companyId', {
+      companyId: user.data.companyId,
+    });
+  }
+
   public async getByUserId(userId: number, user: UserContext) {
     return await this.createQueryBuilder('COMPANY_USER')
       .select('COMPANY_USER.id')

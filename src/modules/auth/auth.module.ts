@@ -5,7 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppHelper } from '../core';
 import { EmailModule } from '../email';
 import { UserModule } from '../user';
-import { AuthController } from './controllers';
 import { AuthKeys } from './objects';
 import { AuthRepository } from './repositories';
 import { AuthResolver } from './resolvers';
@@ -23,7 +22,6 @@ import { JwtStrategy, LocalStrategy } from './strategies';
     UserModule,
     EmailModule,
   ],
-  controllers: [AuthController],
   providers: [AuthResolver, AuthService, LocalStrategy, JwtStrategy],
 })
 export class AuthModule {}

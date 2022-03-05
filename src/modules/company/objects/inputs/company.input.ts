@@ -9,8 +9,5 @@ export class CompanyInput extends OmitType(CreateCompanyInput, [
   'users',
   'enabled',
   'initialCashValue',
-  'initialIndex',
-]) {
-  // @Field(() => [CompanyUserInput], { nullable: true })
-  // users?: CompanyUserInput[];
-}
+  'initialCashIndex',
+]) {}

@@ -13,25 +13,6 @@ import { UserRepository } from '../repositories';
 
 @Injectable()
 export class UserService extends BaseService<User> {
-  protected addAccessCondition(
-    query: SelectQueryBuilder<User>,
-    user: UserContext,
-  ): SelectQueryBuilder<User> {
-    if (user.role === Role.Admin) {
-      return query;
-    }
-
-    return query
-      .innerJoin(
-        'companyUser',
-        'COMPANY_USER',
-        'GENERIC.id = COMPANY_USER.userId',
-      )
-      .andWhere('COMPANY_USER.companyId = :companyId', {
-        companyId: user.data.companyId,
-      });
-  }
-
   constructor(
     protected readonly repo: UserRepository,
     protected readonly emailService: EmailService,
