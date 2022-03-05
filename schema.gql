@@ -173,6 +173,7 @@ type Query {
   company: Company
   cashRegisters: [String!]!
   cashRegisterEntries(date: DateTime!): CashRegisterEntryDetails!
+  lastEntryDate: DateTime
 }
 
 type Mutation {

@@ -35,6 +35,14 @@ export class CashRegisterEntryResolver {
     return result;
   }
 
+  @Access({ page: Page.Cash, action: 'view' })
+  @Query(() => Date, { name: 'lastEntryDate', nullable: true })
+  public async lastEntryDate(@CurrentUser() user: UserContext) {
+    const result = await this.service.getLastEntryDate(user);
+
+    return result;
+  }
+
   @Access({ page: Page.Cash, action: 'create' })
   @Mutation(() => SimpleResponse, { name: 'saveCashRegister' })
   public async saveEntries(

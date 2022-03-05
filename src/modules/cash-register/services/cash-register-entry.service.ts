@@ -7,15 +7,6 @@ import { CashRegisterEntryRepository } from '../repositories';
 
 @Injectable()
 export class CashRegisterEntryService extends BaseService<CashRegisterEntry> {
-  protected addAccessCondition(
-    query: SelectQueryBuilder<CashRegisterEntry>,
-    user: UserContext,
-  ): SelectQueryBuilder<CashRegisterEntry> {
-    return query.andWhere('GENERIC.companyId = :companyId', {
-      companyId: user.data.companyId,
-    });
-  }
-
   constructor(
     protected readonly repo: CashRegisterEntryRepository,
     private readonly companyService: CompanyService,
@@ -43,6 +34,12 @@ export class CashRegisterEntryService extends BaseService<CashRegisterEntry> {
       previousTotalValue: previousData.previousTotalValue,
       previousEntriesCount: previousData.previousEntriesCount,
     };
+  }
+
+  public async getLastEntryDate(user: UserContext) {
+    const result = await this.repo.getLastEntryDate(user);
+
+    return result;
   }
 
   public async saveEntries(entries: CashRegisterEntry[], user: UserContext) {
