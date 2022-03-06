@@ -1,3 +1,3 @@
-export type KeyValue = {
-  [key: string]: unknown;
+export type KeyValue<T> = {
+  [key: string]: T;
 };

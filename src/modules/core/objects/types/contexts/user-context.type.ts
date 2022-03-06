@@ -4,5 +4,5 @@ export interface UserContext {
   id: number;
   email: string;
   role: string | number;
-  data: KeyValue;
+  data: KeyValue<unknown>;
 }

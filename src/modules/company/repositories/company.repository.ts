@@ -1,5 +1,5 @@
 import { EntityRepository, SelectQueryBuilder } from 'typeorm';
-import { BaseRepository, Role, UserContext } from '~/modules/core';
+import { BaseRepository, UserContext } from '~/modules/core';
 import { Company, CompanyCashDetails } from '../objects';
 
 @EntityRepository(Company)

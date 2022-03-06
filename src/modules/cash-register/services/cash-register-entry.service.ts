@@ -1,16 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { SelectQueryBuilder } from 'typeorm';
-import { CompanyService } from '~/modules/company/services';
-import { BaseService, DateHelper, Role, UserContext } from '~/modules/core';
+import { BaseService, UserContext } from '~/modules/core';
 import { CashRegisterEntry, CashRegisterEntryDetails } from '../objects';
 import { CashRegisterEntryRepository } from '../repositories';
 
 @Injectable()
 export class CashRegisterEntryService extends BaseService<CashRegisterEntry> {
-  constructor(
-    protected readonly repo: CashRegisterEntryRepository,
-    private readonly companyService: CompanyService,
-  ) {
+  constructor(protected readonly repo: CashRegisterEntryRepository) {
     super(repo);
   }
 
@@ -25,12 +20,10 @@ export class CashRegisterEntryService extends BaseService<CashRegisterEntry> {
     user: UserContext,
   ): Promise<CashRegisterEntryDetails> {
     const entries = await this.repo.getByDate(date, user);
-    const companyCashDetails = await this.companyService.getCashDetails(user);
     const previousData = await this.repo.getPreviousEntriesData(date, user);
 
     return {
       entries: entries ?? [],
-      companyCashDetails,
       previousTotalValue: previousData.previousTotalValue,
       previousEntriesCount: previousData.previousEntriesCount,
     };

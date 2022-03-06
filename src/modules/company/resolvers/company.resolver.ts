@@ -3,9 +3,16 @@ import { Args, Mutation, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { Access, CurrentUser } from '~/modules/auth/decorators';
 import { GraphQlAccessGuard, GraphQlAuthGuard } from '~/modules/auth/guards';
 import { Page } from '~/modules/auth/objects';
-import { composeResult, PageListInput, UserContext } from '~/modules/core';
+import {
+  composeResult,
+  PageListInput,
+  SimpleResponse,
+  UserContext,
+} from '~/modules/core';
 import {
   Company,
+  CompanyCashDetails,
+  CompanyCashDetailsInput,
   CompanyInput,
   CompanyResponse,
   PaginatedCompanyResponse,
@@ -131,5 +138,23 @@ export class CompanyResolver {
     @CurrentUser() user: UserContext,
   ) {
     return await this.companyUserService.findAndCount(request, user);
+  }
+
+  @Access({ page: Page.Cash, action: 'view' })
+  @ResolveField(() => CompanyCashDetails, { nullable: true })
+  public async cashDetails(@CurrentUser() user: UserContext) {
+    return await this.service.getCashDetails(user);
+  }
+
+  @Access({ page: Page.Cash, action: 'update' })
+  @Mutation(() => SimpleResponse, { name: 'updateCompanyCashDetails' })
+  public async updateCashDetails(
+    @Args('model', { type: () => CompanyCashDetailsInput })
+    cashDetails: CompanyCashDetailsInput,
+    @CurrentUser() user: UserContext,
+  ) {
+    await this.service.updateCashDetails(cashDetails, user);
+
+    return composeResult();
   }
 }
