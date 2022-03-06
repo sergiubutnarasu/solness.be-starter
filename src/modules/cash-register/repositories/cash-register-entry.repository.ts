@@ -29,8 +29,8 @@ export class CashRegisterEntryRepository extends BaseRepository<CashRegisterEntr
     const result = await conditionQuery
       .select('GENERIC.id')
       .addSelect('GENERIC.date')
-      .groupBy('date')
-      .orderBy('date')
+      .groupBy('GENERIC.date')
+      .orderBy('GENERIC.date')
       .getMany();
 
     return result?.map(({ date }) => DateHelper.getDate(date));
