@@ -234,7 +234,6 @@ input CompanyCashDetailsInput {
 
 input CashRegisterEntryInput {
   id: Int
-  companyId: Float
   date: DateTime!
   docNumber: String!
   annexNumber: String

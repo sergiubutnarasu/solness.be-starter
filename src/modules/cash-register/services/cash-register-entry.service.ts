@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { BaseService, UserContext } from '~/modules/core';
-import { CashRegisterEntry, CashRegisterEntryDetails } from '../objects';
+import {
+  CashRegisterEntry,
+  CashRegisterEntryDetails,
+  CashRegisterEntryInput,
+} from '../objects';
 import { CashRegisterEntryRepository } from '../repositories';
 
 @Injectable()
@@ -35,16 +39,21 @@ export class CashRegisterEntryService extends BaseService<CashRegisterEntry> {
     return result;
   }
 
-  public async saveEntries(entries: CashRegisterEntry[], user: UserContext) {
+  public async saveEntries(
+    entries: CashRegisterEntryInput[],
+    user: UserContext,
+  ) {
+    const companyId = +user.data.companyId;
+
     const oldList = entries
-      .filter(({ id, companyId }) => !!id && companyId === user.data.companyId)
-      .map((entry) => ({ ...entry, enabled: true }));
+      .filter(({ id }) => !!id)
+      .map((entry) => ({ ...entry, enabled: true, companyId }));
 
     const newList = entries
       .filter(({ id }) => !id)
       .map((entry) => ({
         ...entry,
-        companyId: +user.data.companyId,
+        companyId,
         enabled: true,
       }));
 

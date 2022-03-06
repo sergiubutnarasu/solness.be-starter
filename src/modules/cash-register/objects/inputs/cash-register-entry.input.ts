@@ -7,8 +7,5 @@ export class CreateCashRegisterEntryInput extends CashRegisterEntry {}
 @InputType()
 export class CashRegisterEntryInput extends OmitType(
   CreateCashRegisterEntryInput,
-  ['enabled'],
-) {
-  @Field({ nullable: true })
-  companyId: number;
-}
+  ['enabled', 'companyId'],
+) {}
