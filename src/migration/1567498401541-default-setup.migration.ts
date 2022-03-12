@@ -16,7 +16,7 @@ export class DefaultSetup1567498401541 implements MigrationInterface {
     );
 
     const {
-      raw: { insertId: userId },
+      identifiers: [{ id: userId }],
     } = await queryRunner.manager.insert<User>('user', {
       enabled: true,
       verified: true,
@@ -31,7 +31,7 @@ export class DefaultSetup1567498401541 implements MigrationInterface {
     });
 
     const {
-      raw: { insertId: companyId },
+      identifiers: [{ id: companyId }],
     } = await queryRunner.manager.insert<Company>('company', {
       enabled: true,
       createdUserId: 0,

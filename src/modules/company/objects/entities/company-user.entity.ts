@@ -1,6 +1,6 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, ManyToOne } from 'typeorm';
-import { BaseEntity, CompanyRole } from '~/modules/core';
+import { BaseEntity, CompanyRole, JsonArrayTransform } from '~/modules/core';
 import { User } from '~/modules/user/objects';
 import { Company } from './company.entity';
 
@@ -28,9 +28,10 @@ export class CompanyUser extends BaseEntity {
 
   @Field(() => [String])
   @Column({
-    type: 'set',
-    enum: CompanyRole,
-    default: [CompanyRole.User],
+    type: 'varchar',
+    length: 150,
+    transformer: JsonArrayTransform,
+    default: JSON.stringify([CompanyRole.User]),
   })
   roles?: CompanyRole[];
 }

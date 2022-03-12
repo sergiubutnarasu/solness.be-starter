@@ -25,33 +25,31 @@ export class UserRepository extends BaseRepository<User> {
   }
 
   public async getUserAuthPayload(userId: number): Promise<UserContext> {
-    const result = await this.query(
-      `
-        SELECT 
-          USER.id,
-          USER.email,
-          USER.role,
-          USER.firstName,
-          USER.lastName,
-          COMPANY_USER.companyId,
-          COMPANY_USER.roles as companyRoles
-        FROM user USER
-        LEFT JOIN companyUser COMPANY_USER
-          ON COMPANY_USER.userId = USER.id
-        WHERE
-          USER.id = ?
-            AND USER.enabled = 1
-            AND USER.verified = 1
-      `,
-      [userId],
-    );
+    const data = await this.createQueryBuilder('USER')
+      .select('USER.id', 'id')
+      .addSelect('USER.email', 'email')
+      .addSelect('USER.role', 'role')
+      .addSelect('USER.firstName', 'firstName')
+      .addSelect('USER.lastName', 'lastName')
+      .addSelect('COMPANY_USER.companyId', 'companyId')
+      .addSelect('COMPANY_USER.roles', 'companyRoles')
+      .leftJoin('companyUser', 'COMPANY_USER', 'COMPANY_USER.userId = USER.id')
+      .where(' USER.id = :userId', { userId })
+      .andWhere('USER.enabled = true')
+      .andWhere('USER.verified = true')
+      .getRawOne();
 
-    if (!result?.length) {
+    if (!data) {
       return null;
     }
 
-    const data = result[0];
     const isAdmin = data.role === Role.Admin;
+
+    let companyRoles = [];
+
+    try {
+      companyRoles = JSON.parse(data.companyRoles);
+    } catch {}
 
     const context = {
       email: CryptoHelper.decryptValue(data.email),
@@ -60,7 +58,7 @@ export class UserRepository extends BaseRepository<User> {
       data: {
         isAdmin,
         companyId: data.companyId,
-        companyRoles: ((data.companyRoles as string) ?? '').split(','),
+        companyRoles,
         firstName: CryptoHelper.decryptValue(data.firstName),
         lastName: CryptoHelper.decryptValue(data.lastName),
       },

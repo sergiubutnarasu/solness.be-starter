@@ -27,4 +27,4 @@ export {
 export { BaseRepository } from './repositories';
 export { BaseCrudService, BaseService } from './services';
 export { CommonSubscriber } from './subscribers';
-export { EncryptTransform } from './transformers';
+export { EncryptTransform, JsonArrayTransform } from './transformers';
