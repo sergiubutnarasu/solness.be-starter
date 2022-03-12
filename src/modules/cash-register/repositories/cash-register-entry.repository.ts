@@ -14,7 +14,7 @@ export class CashRegisterEntryRepository extends BaseRepository<CashRegisterEntr
         'COMPANY_USER',
         'GENERIC.companyId = COMPANY_USER.companyId',
       )
-      .andWhere('COMPANY_USER.verified = 1')
+      .andWhere('COMPANY_USER.verified = true')
       .andWhere('COMPANY_USER.userId = :userId', {
         userId: user.id,
       })
@@ -27,11 +27,10 @@ export class CashRegisterEntryRepository extends BaseRepository<CashRegisterEntr
     const genericQuery = this.createQueryBuilder('GENERIC');
     const conditionQuery = this.addAccessCondition(genericQuery, user);
     const result = await conditionQuery
-      .select('GENERIC.id')
-      .addSelect('GENERIC.date')
+      .select('GENERIC.date', 'date')
       .groupBy('GENERIC.date')
       .orderBy('GENERIC.date')
-      .getMany();
+      .getRawMany<{ date: Date }>();
 
     return result?.map(({ date }) => DateHelper.getDate(date));
   }

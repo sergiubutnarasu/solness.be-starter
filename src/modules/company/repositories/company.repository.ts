@@ -14,7 +14,7 @@ export class CompanyRepository extends BaseRepository<Company> {
         'COMPANY_USER',
         'GENERIC.id = COMPANY_USER.companyId',
       )
-      .andWhere('COMPANY_USER.verified = 1')
+      .andWhere('COMPANY_USER.verified = true')
       .andWhere('COMPANY_USER.userId = :userId', {
         userId: user.id,
       });

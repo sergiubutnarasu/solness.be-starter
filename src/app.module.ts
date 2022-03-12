@@ -27,7 +27,7 @@ const appModules = [
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'mariadb',
+      type: 'postgres',
       host: AppHelper.getConfig(AppConfigKey.DatabaseHost),
       database: AppHelper.getConfig(AppConfigKey.DatabaseName),
       username: AppHelper.getConfig(AppConfigKey.DatabaseUser),

@@ -34,7 +34,7 @@ export abstract class BaseRepository<
     const query = this.createQueryBuilder('GENERIC')
       .skip(skip)
       .take(request.pageSize)
-      .where('GENERIC.enabled = 1');
+      .where('GENERIC.enabled = true');
 
     const conditionQuery = this.addAccessCondition(query, user);
     const [results, count] = await conditionQuery.getManyAndCount();
