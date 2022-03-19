@@ -4,7 +4,7 @@ import {
   CryptoHelper,
   Role,
   UserContext,
-} from '~/modules/core';
+} from '~/core';
 import { User } from '../objects';
 
 @EntityRepository(User)

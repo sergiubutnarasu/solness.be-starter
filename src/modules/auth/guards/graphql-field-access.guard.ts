@@ -1,5 +1,5 @@
 import { MiddlewareContext, NextFn } from '@nestjs/graphql';
-import { UserContext } from '~/modules/core';
+import { UserContext } from '~/core';
 import { checkPageAction } from '../helpers';
 import { AccessType } from '../objects';
 

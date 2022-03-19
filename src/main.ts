@@ -3,7 +3,7 @@ dotenv.config();
 
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { AppConfigKey, AppHelper, GraphQLFilter } from './modules/core';
+import { AppConfigKey, AppHelper, GraphQLFilter } from '~/core';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

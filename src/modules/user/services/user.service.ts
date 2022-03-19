@@ -6,7 +6,7 @@ import {
   Role,
   StringHelper,
   UserContext,
-} from '~/modules/core';
+} from '~/core';
 import { EmailService, MailDataRequired } from '~/modules/email';
 import { User } from '../objects';
 import { UserRepository } from '../repositories';

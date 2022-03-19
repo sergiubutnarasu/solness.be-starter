@@ -4,7 +4,7 @@ import {
   checkDefaultPageActions,
 } from '~/modules/auth/helpers';
 import { Page } from '~/modules/auth/objects';
-import { UserContext } from '~/modules/core';
+import { UserContext } from '~/core';
 import { Permission } from '../objects';
 
 @Injectable()

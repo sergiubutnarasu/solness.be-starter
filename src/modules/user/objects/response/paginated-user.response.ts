@@ -1,5 +1,5 @@
 import { ObjectType } from '@nestjs/graphql';
-import { GraphQLPaginatedResponse } from '~/modules/core';
+import { GraphQLPaginatedResponse } from '~/core';
 import { User } from '../entities';
 
 @ObjectType()

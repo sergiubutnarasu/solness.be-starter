@@ -4,7 +4,7 @@ import {
   AppHelper,
   DateHelper,
   Environment,
-} from '~/modules/core';
+} from '~/core';
 import { TokenPayload } from '../objects';
 
 class AuthHelperClass {

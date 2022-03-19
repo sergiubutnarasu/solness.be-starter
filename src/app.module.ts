@@ -12,7 +12,7 @@ import {
   AppHelper,
   CommonSubscriber,
   Environment,
-} from './modules/core';
+} from './core';
 import { UserModule } from './modules/user';
 import { ViewerModule } from './modules/viewer';
 

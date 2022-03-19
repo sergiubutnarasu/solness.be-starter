@@ -16,7 +16,7 @@ import {
   Role,
   SimpleResponse,
   UserContext,
-} from '~/modules/core';
+} from '~/core';
 import {
   ChangePasswordInput,
   PaginatedUserResponse,

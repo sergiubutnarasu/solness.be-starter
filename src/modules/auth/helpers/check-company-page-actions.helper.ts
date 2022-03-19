@@ -1,4 +1,4 @@
-import { UserContext } from '~/modules/core';
+import { UserContext } from '~/core';
 import { CompanyActionType, Page } from '../objects';
 import checkDefaultPageActions from './check-default-page-actions.helper';
 import checkPageAction from './check-page-action.helper';

@@ -2,7 +2,7 @@ import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, OneToMany } from 'typeorm';
 import { graphQlFieldAccess } from '~/modules/auth/guards';
 import { Page } from '~/modules/auth/objects';
-import { BaseEntity, EncryptTransform } from '~/modules/core';
+import { BaseEntity, EncryptTransform } from '~/core';
 import { CompanyUser } from './company-user.entity';
 
 @Entity()

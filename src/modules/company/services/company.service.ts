@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { BaseService, UserContext } from '~/modules/core';
+import { BaseService, UserContext } from '~/core';
 import {
   Company,
   CompanyCashDetails,

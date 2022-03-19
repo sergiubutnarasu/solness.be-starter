@@ -1,4 +1,4 @@
-import { CompanyRole, UserContext } from '~/modules/core';
+import { CompanyRole, UserContext } from '~/core';
 import {
   CashActionsMapping,
   CompanyActionsMapping,

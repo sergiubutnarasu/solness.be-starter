@@ -1,6 +1,6 @@
 import { ForbiddenException, UnauthorizedException } from '@nestjs/common';
 import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
-import { composeResult, SimpleResponse } from '~/modules/core';
+import { composeResult, SimpleResponse } from '~/core';
 import { AuthHelper } from '../helpers';
 import { TokenResponse } from '../objects';
 import { AuthService } from '../services';

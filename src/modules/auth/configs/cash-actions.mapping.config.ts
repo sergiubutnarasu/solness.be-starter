@@ -1,4 +1,4 @@
-import { CompanyRole } from '~/modules/core';
+import { CompanyRole } from '~/core';
 import { CashActionType } from '../objects';
 
 export const CashActionsMapping: Record<CashActionType, CompanyRole[]> = {

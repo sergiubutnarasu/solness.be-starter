@@ -1,4 +1,4 @@
-import { CompanyRole } from '~/modules/core';
+import { CompanyRole } from '~/core';
 import { UserActionType } from '../objects';
 
 export const UserActionsMapping: Record<UserActionType, CompanyRole[]> = {

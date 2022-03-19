@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
-import { BaseEntity } from '~/modules/core';
+import { BaseEntity } from '~/core';
 
 @Entity('refreshToken')
 export class RefreshToken extends BaseEntity {

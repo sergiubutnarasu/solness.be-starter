@@ -7,7 +7,7 @@ import {
   PaginationHelper,
   StringHelper,
   UserContext,
-} from '~/modules/core';
+} from '~/core';
 import { UserService } from '~/modules/user';
 import { CompanyUser, InviteUserInput } from '../objects';
 import { CompanyUserRepository } from '../repositories';

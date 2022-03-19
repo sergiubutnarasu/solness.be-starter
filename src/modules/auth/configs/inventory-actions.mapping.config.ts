@@ -1,4 +1,4 @@
-import { CompanyRole } from '~/modules/core';
+import { CompanyRole } from '~/core';
 import { InventoryActionType } from '../objects';
 
 export const InventoryActionsMapping: Record<

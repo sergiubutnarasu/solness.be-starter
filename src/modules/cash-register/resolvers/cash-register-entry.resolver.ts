@@ -3,8 +3,7 @@ import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Access, CurrentUser } from '~/modules/auth/decorators';
 import { GraphQlAccessGuard, GraphQlAuthGuard } from '~/modules/auth/guards';
 import { Page } from '~/modules/auth/objects';
-import { CompanyCashDetailsInput } from '~/modules/company/objects';
-import { composeResult, SimpleResponse, UserContext } from '~/modules/core';
+import { composeResult, SimpleResponse, UserContext } from '~/core';
 import {
   CashRegisterEntry,
   CashRegisterEntryDetails,

@@ -1,4 +1,4 @@
-import { UserContext } from '~/modules/core';
+import { UserContext } from '~/core';
 import { BaseActionType, Page } from '../objects';
 import checkPageAction from './check-page-action.helper';
 

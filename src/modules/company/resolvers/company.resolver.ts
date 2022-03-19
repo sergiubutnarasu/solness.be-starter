@@ -8,7 +8,7 @@ import {
   PageListInput,
   SimpleResponse,
   UserContext,
-} from '~/modules/core';
+} from '~/core';
 import {
   Company,
   CompanyCashDetails,

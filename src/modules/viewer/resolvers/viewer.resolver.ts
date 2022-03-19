@@ -2,7 +2,7 @@ import { UseGuards } from '@nestjs/common';
 import { Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from '~/modules/auth/decorators';
 import { GraphQlAuthGuard } from '~/modules/auth/guards';
-import { UserContext } from '~/modules/core';
+import { UserContext } from '~/core';
 import { Permission, Viewer } from '../objects';
 import { PermissionService } from '../services';
 

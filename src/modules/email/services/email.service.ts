@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as sendgrid from '@sendgrid/mail';
-import { AppConfigKey, AppHelper, Environment } from '~/modules/core';
+import { AppConfigKey, AppHelper, Environment } from '~/core';
 import { MailDataRequired } from '../objects';
 
 @Injectable()

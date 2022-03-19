@@ -1,6 +1,6 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { Column, Entity } from 'typeorm';
-import { BaseEntity, EncryptTransform, Role } from '~/modules/core';
+import { BaseEntity, EncryptTransform, Role } from '~/core';
 
 @Entity()
 @ObjectType()

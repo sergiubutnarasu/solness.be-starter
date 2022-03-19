@@ -6,7 +6,7 @@ import {
   CompanyRole,
   CryptoHelper,
   Role,
-} from '~/modules/core';
+} from '~/core';
 import { User } from '../modules/user/objects';
 
 export class DefaultSetup1567498401541 implements MigrationInterface {

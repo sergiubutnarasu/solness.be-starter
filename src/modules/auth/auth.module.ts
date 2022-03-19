@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppHelper } from '../core';
+import { AppHelper } from '~/core';
 import { EmailModule } from '../email';
 import { UserModule } from '../user';
 import { AuthKeys } from './objects';
