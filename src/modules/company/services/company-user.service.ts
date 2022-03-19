@@ -8,7 +8,7 @@ import {
   StringHelper,
   UserContext,
 } from '~/core';
-import { UserService } from '~/modules/user';
+import { SharedUserService } from '~/shared/user';
 import { CompanyUser, InviteUserInput } from '../objects';
 import { CompanyUserRepository } from '../repositories';
 
@@ -16,7 +16,7 @@ import { CompanyUserRepository } from '../repositories';
 export class CompanyUserService extends BaseService<CompanyUser> {
   constructor(
     protected readonly repo: CompanyUserRepository,
-    private readonly userService: UserService,
+    private readonly sharedUserService: SharedUserService,
   ) {
     super(repo);
   }
@@ -43,7 +43,9 @@ export class CompanyUserService extends BaseService<CompanyUser> {
     invited: InviteUserInput,
     user: UserContext,
   ): Promise<CompanyUser | undefined> {
-    const existingUser = await this.userService.getUserByEmail(invited.email);
+    const existingUser = await this.sharedUserService.getUserByEmail(
+      invited.email,
+    );
 
     if (existingUser) {
       return await this.inviteExistingUser(existingUser.id, user);
@@ -85,7 +87,7 @@ export class CompanyUserService extends BaseService<CompanyUser> {
     const randomString = StringHelper.generateString(6, 12);
     const password = CryptoHelper.hash(randomString);
 
-    const newCompanyUser = await this.userService.create(
+    const newCompanyUser = await this.sharedUserService.create(
       {
         ...invited,
         password,

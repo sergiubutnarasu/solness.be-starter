@@ -3,8 +3,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppHelper } from '~/core';
-import { EmailModule } from '../email';
-import { UserModule } from '../user';
+import { EmailModule } from '~/libraries/email';
+import { SharedUserModule } from '~/shared/user';
 import { AuthKeys } from './objects';
 import { AuthRepository } from './repositories';
 import { AuthResolver } from './resolvers';
@@ -19,7 +19,7 @@ import { JwtStrategy, LocalStrategy } from './strategies';
     }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     TypeOrmModule.forFeature([AuthRepository]),
-    UserModule,
+    SharedUserModule,
     EmailModule,
   ],
   providers: [AuthResolver, AuthService, LocalStrategy, JwtStrategy],

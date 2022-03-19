@@ -19,17 +19,6 @@ type User {
   role: String!
 }
 
-type UserResponse {
-  data: User
-  success: Boolean!
-  messages: [String!]
-}
-
-type PaginatedUserResponse {
-  data: [User!]
-  total: Int!
-}
-
 type TokenPayload {
   accessToken: String!
   refreshToken: String!
@@ -116,6 +105,17 @@ type PaginatedCompanyResponse {
   total: Int!
 }
 
+type UserResponse {
+  data: User
+  success: Boolean!
+  messages: [String!]
+}
+
+type PaginatedUserResponse {
+  data: [User!]
+  total: Int!
+}
+
 type CashAction implements BaseAction {
   view: Boolean!
   create: Boolean!
@@ -165,9 +165,9 @@ type Viewer {
 }
 
 type Query {
+  viewer: Viewer!
   users(request: PageListInput): PaginatedUserResponse!
   user: User
-  viewer: Viewer!
   companyUser(id: Float!): CompanyUser
   companies(request: PageListInput): PaginatedCompanyResponse!
   company: Company

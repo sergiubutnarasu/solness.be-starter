@@ -2,16 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { MoreThanOrEqual } from 'typeorm';
 import { CryptoHelper, DateHelper, StringHelper } from '~/core';
-import { EmailService } from '~/modules/email';
-import { UserService } from '~/modules/user';
-import { TokenPayload, RefreshToken } from '../objects';
+import { EmailService } from '~/libraries/email';
+import { SharedUserService } from '~/shared/user';
+import { RefreshToken, TokenPayload } from '../objects';
 import { AuthRepository } from '../repositories';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly userService: UserService,
+    private readonly sharedUserService: SharedUserService,
     private readonly emailService: EmailService,
     private readonly refreshTokenRepository: AuthRepository,
   ) {}
@@ -22,7 +22,7 @@ export class AuthService {
   }
 
   public async validateUser(username: string, password: string) {
-    const user = await this.userService.findOne({
+    const user = await this.sharedUserService.findOne({
       where: {
         email: username,
         enabled: true,
@@ -40,7 +40,7 @@ export class AuthService {
   }
 
   public async generateToken(userId: number): Promise<TokenPayload> {
-    const userPayload = await this.userService.getUserAuthPayload(userId);
+    const userPayload = await this.sharedUserService.getUserAuthPayload(userId);
 
     const payload = {
       sub: userPayload.id,
@@ -59,7 +59,7 @@ export class AuthService {
   }
 
   public async sendResetPasswordEmail(email: string) {
-    const user = await this.userService.getUserByEmail(email);
+    const user = await this.sharedUserService.getUserByEmail(email);
 
     if (!user) {
       return false;
@@ -114,7 +114,7 @@ export class AuthService {
       );
 
       if (userId) {
-        return await this.userService.resetPassword(userId, newPassword);
+        return await this.sharedUserService.resetPassword(userId, newPassword);
       }
     } catch {
       return false;

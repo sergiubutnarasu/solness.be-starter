@@ -1,5 +1,5 @@
 import { InputType, OmitType } from '@nestjs/graphql';
-import { User } from '../entities';
+import { User } from '~/shared/user';
 
 /**
  * This class is needed to use OmitType and fixing the generating error

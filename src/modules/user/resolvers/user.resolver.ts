@@ -20,11 +20,11 @@ import {
 import {
   ChangePasswordInput,
   PaginatedUserResponse,
-  User,
   UserInput,
   UserResponse,
 } from '../objects';
 import { UserService } from '../services';
+import { User } from '~/shared/user';
 
 @UseGuards(GraphQlAuthGuard, GraphQlAccessGuard, GraphQlRolesGuard)
 @Resolver(() => User)

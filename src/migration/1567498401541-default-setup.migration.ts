@@ -1,5 +1,4 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
-import { Company, CompanyUser } from '~/modules/company/objects';
 import {
   AppConfigKey,
   AppHelper,
@@ -7,7 +6,8 @@ import {
   CryptoHelper,
   Role,
 } from '~/core';
-import { User } from '../modules/user/objects';
+import { Company, CompanyUser } from '~/modules/company/objects';
+import { User } from '~/shared/user';
 
 export class DefaultSetup1567498401541 implements MigrationInterface {
   async up(queryRunner: QueryRunner): Promise<any> {

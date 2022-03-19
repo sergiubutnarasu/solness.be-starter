@@ -11,12 +11,11 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
+import { composeResult, SimpleResponse, UserContext } from '~/core';
 import { Access, CurrentUser } from '~/modules/auth/decorators';
 import { GraphQlAccessGuard, GraphQlAuthGuard } from '~/modules/auth/guards';
 import { Page } from '~/modules/auth/objects';
-import { composeResult, SimpleResponse, UserContext } from '~/core';
-import { UserService } from '~/modules/user';
-import { User } from '~/modules/user/objects';
+import { SharedUserService, User } from '~/shared/user';
 import { CompanyUser, InviteUserInput } from '../objects';
 import { CompanyUserService } from '../services';
 
@@ -25,7 +24,7 @@ import { CompanyUserService } from '../services';
 export class CompanyUserResolver {
   constructor(
     private readonly service: CompanyUserService,
-    private readonly userService: UserService,
+    private readonly sharedUserService: SharedUserService,
   ) {}
 
   @Access({ page: Page.Company, action: 'view' })
@@ -84,6 +83,6 @@ export class CompanyUserResolver {
     @Parent() companyUser: CompanyUser,
     @CurrentUser() user: UserContext,
   ) {
-    return await this.userService.get(companyUser.userId, user);
+    return await this.sharedUserService.get(companyUser.userId, user);
   }
 }
