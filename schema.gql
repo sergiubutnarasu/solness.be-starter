@@ -66,7 +66,6 @@ type Company {
   initialCashValue: String
   initialCashIndex: Int
   users(request: PageListInput): PaginatedCompanyUserResponse
-  cashDetails: CompanyCashDetails
 }
 
 input PageListInput {
@@ -82,11 +81,6 @@ type CompanyUser {
   companyId: Float!
   roles: [String!]!
   user: User!
-}
-
-type CompanyCashDetails {
-  initialCashIndex: Int
-  initialCashValue: Float
 }
 
 type CompanyResponse {

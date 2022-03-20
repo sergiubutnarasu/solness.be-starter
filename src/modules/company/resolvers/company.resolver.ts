@@ -1,17 +1,16 @@
 import { NotFoundException, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { Access, CurrentUser } from '~/modules/auth/decorators';
-import { GraphQlAccessGuard, GraphQlAuthGuard } from '~/modules/auth/guards';
-import { Page } from '~/modules/auth/objects';
 import {
   composeResult,
   PageListInput,
   SimpleResponse,
   UserContext,
 } from '~/core';
+import { Access, CurrentUser } from '~/modules/auth/decorators';
+import { GraphQlAccessGuard, GraphQlAuthGuard } from '~/modules/auth/guards';
+import { Page } from '~/modules/auth/objects';
 import {
   Company,
-  CompanyCashDetails,
   CompanyCashDetailsInput,
   CompanyInput,
   CompanyResponse,
@@ -138,12 +137,6 @@ export class CompanyResolver {
     @CurrentUser() user: UserContext,
   ) {
     return await this.companyUserService.findAndCount(request, user);
-  }
-
-  @Access({ page: Page.Cash, action: 'view' })
-  @ResolveField(() => CompanyCashDetails, { nullable: true })
-  public async cashDetails(@CurrentUser() user: UserContext) {
-    return await this.service.getCashDetails(user);
   }
 
   @Access({ page: Page.Cash, action: 'update' })

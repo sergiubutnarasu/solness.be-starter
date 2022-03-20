@@ -1,6 +1,6 @@
 import { EntityRepository, SelectQueryBuilder } from 'typeorm';
 import { BaseRepository, UserContext } from '~/core';
-import { Company, CompanyCashDetails } from '../objects';
+import { Company } from '../objects';
 
 @EntityRepository(Company)
 export class CompanyRepository extends BaseRepository<Company> {
@@ -18,28 +18,5 @@ export class CompanyRepository extends BaseRepository<Company> {
       .andWhere('COMPANY_USER.userId = :userId', {
         userId: user.id,
       });
-  }
-
-  public async getCashDetails(user: UserContext): Promise<CompanyCashDetails> {
-    const query = this.createQueryBuilder('GENERIC')
-      .select('GENERIC.id')
-      .addSelect('GENERIC.initialCashIndex')
-      .addSelect('GENERIC.initialCashValue')
-      .where('GENERIC.id = :companyId', {
-        companyId: user.data.companyId,
-      });
-
-    const additionalQuery = this.addAccessCondition(query, user);
-
-    const data = await additionalQuery.getOne();
-
-    if (data) {
-      const { initialCashValue, initialCashIndex } = data;
-
-      return {
-        initialCashIndex: initialCashIndex ?? 1,
-        initialCashValue: +initialCashValue ?? 0,
-      };
-    }
   }
 }
