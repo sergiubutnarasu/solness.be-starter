@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import {
   Args,
+  Context,
   Mutation,
   Parent,
   Query,
@@ -22,10 +23,7 @@ import { CompanyUserService } from '../services';
 @UseGuards(GraphQlAuthGuard, GraphQlAccessGuard)
 @Resolver(() => CompanyUser)
 export class CompanyUserResolver {
-  constructor(
-    private readonly service: CompanyUserService,
-    private readonly sharedUserService: SharedUserService,
-  ) {}
+  constructor(private readonly service: CompanyUserService) {}
 
   @Access({ page: Page.Company, action: 'view' })
   @Query(() => CompanyUser, { name: 'companyUser', nullable: true })
@@ -81,8 +79,10 @@ export class CompanyUserResolver {
   @ResolveField(() => User)
   public async user(
     @Parent() companyUser: CompanyUser,
-    @CurrentUser() user: UserContext,
+    @Context() { loaders }: any,
   ) {
-    return await this.sharedUserService.get(companyUser.userId, user);
+    const result = await loaders.usersLoader.load(companyUser.userId);
+
+    return result;
   }
 }

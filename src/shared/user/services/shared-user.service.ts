@@ -34,10 +34,7 @@ export class SharedUserService extends BaseService<User> {
   }
 
   public async getUserByEmail(email: string): Promise<User | undefined> {
-    return await this.findOne({
-      email: email,
-      enabled: true,
-    });
+    return await this.repo.getByEmail(email);
   }
 
   public async getUserAuthPayload(userId: number): Promise<UserContext> {
@@ -60,5 +57,11 @@ export class SharedUserService extends BaseService<User> {
     }
 
     return false;
+  }
+
+  public async getByIdsWithoutGuard(
+    ids: number[],
+  ): Promise<User[] | undefined> {
+    return await this.repo.getByIdsWithoutGuard(ids);
   }
 }

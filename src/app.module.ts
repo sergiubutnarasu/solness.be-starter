@@ -7,14 +7,10 @@ import { AppService } from './app.service';
 import { AuthModule } from './modules/auth';
 import { CashRegisterModule } from './modules/cash-register';
 import { CompanyModule } from './modules/company';
-import {
-  AppConfigKey,
-  AppHelper,
-  CommonSubscriber,
-  Environment,
-} from './core';
+import { AppConfigKey, AppHelper, CommonSubscriber, Environment } from './core';
 import { UserModule } from './modules/user';
 import { ViewerModule } from './modules/viewer';
+import { DataLoaderModule, DataLoaderService } from './shared/data-loader';
 
 const appModules = [
   AuthModule,
@@ -42,17 +38,26 @@ const appModules = [
       subscribers: [CommonSubscriber],
       logging: AppHelper.checkEnvironment(Environment.Development),
     }),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
-      debug: AppHelper.checkEnvironment(Environment.Development),
-      playground: AppHelper.checkEnvironment(Environment.Development)
-        ? { settings: { 'request.credentials': 'include' } }
-        : false,
-      autoSchemaFile: 'schema.gql',
-      context: ({ req }) => ({ req }),
-      cors: {
-        origin: AppHelper.getConfig(AppConfigKey.DefaultLink),
-        credentials: true,
+      imports: [DataLoaderModule],
+      inject: [DataLoaderService],
+      useFactory: (dataLoaderService: DataLoaderService) => {
+        return {
+          autoSchemaFile: 'schema.gql',
+          context: ({ req }) => ({
+            req,
+            loaders: dataLoaderService.createLoaders(),
+          }),
+          cors: {
+            origin: AppHelper.getConfig(AppConfigKey.DefaultLink),
+            credentials: true,
+          },
+          debug: AppHelper.checkEnvironment(Environment.Development),
+          playground: AppHelper.checkEnvironment(Environment.Development)
+            ? { settings: { 'request.credentials': 'include' } }
+            : false,
+        };
       },
     }),
     ...appModules,

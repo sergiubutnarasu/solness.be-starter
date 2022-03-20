@@ -61,4 +61,17 @@ export class SharedUserRepository extends BaseRepository<User> {
 
     return context;
   }
+
+  public async getByEmail(email: string): Promise<User | undefined> {
+    return await this.findOne({
+      email: email,
+      enabled: true,
+    });
+  }
+
+  public async getByIdsWithoutGuard(
+    ids: number[],
+  ): Promise<User[] | undefined> {
+    return await this.findByIds(ids);
+  }
 }
