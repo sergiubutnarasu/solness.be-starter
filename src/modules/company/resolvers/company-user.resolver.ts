@@ -16,7 +16,7 @@ import { composeResult, SimpleResponse, UserContext } from '~/core';
 import { Access, CurrentUser } from '~/modules/auth/decorators';
 import { GraphQlAccessGuard, GraphQlAuthGuard } from '~/modules/auth/guards';
 import { Page } from '~/modules/auth/objects';
-import { SharedUserService, User } from '~/shared/user';
+import { User } from '~/shared/user';
 import { CompanyUser, InviteUserInput } from '../objects';
 import { CompanyUserService } from '../services';
 
