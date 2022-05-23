@@ -14,7 +14,8 @@ async function bootstrap() {
     origin: AppHelper.getConfig(AppConfigKey.DefaultLink),
   });
 
-  await app.listen(5000);
+  const port = AppHelper.getConfig(AppConfigKey.Port);
+  await app.listen(port ?? 5089);
 }
 
 bootstrap();

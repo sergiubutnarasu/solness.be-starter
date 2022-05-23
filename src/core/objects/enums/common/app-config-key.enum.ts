@@ -9,5 +9,6 @@ export enum AppConfigKey {
   DefaultUserPassword = 'SOLNESS_DEFAULT_USER_PASSWORD',
   DefaultUsername = 'SOLNESS_DEFAULT_USERNAME',
   Environment = 'SOLNESS_ENVIRONMENT',
+  Port = 'PORT',
   SendgridKey = 'SOLNESS_SENDGRID_KEY',
 }
